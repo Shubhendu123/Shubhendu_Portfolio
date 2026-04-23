@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const caseStudies = [
   {
@@ -101,29 +102,42 @@ export default function Home() {
       {/* Hero */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-            Shubhendu Vimal &mdash; Principal PM | AI Products &amp; Enterprise Analytics
-          </h1>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-8">
-            11+ years building AI-powered products from early-stage models to enterprise-scale platforms.
-          </p>
-          <div className="flex gap-4">
-            <a
-              href="https://linkedin.com/in/shubhendu-vimal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/Shubhendu123"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 border border-zinc-300 rounded-lg hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800 transition-colors"
-            >
-              GitHub
-            </a>
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            <div className="flex-1">
+              <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+                Shubhendu Vimal &mdash; Principal PM | AI Products &amp; Enterprise Analytics
+              </h1>
+              <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-8">
+                11+ years building AI-powered products from early-stage models to enterprise-scale platforms.
+              </p>
+              <div className="flex gap-4">
+                <a
+                  href="https://linkedin.com/in/shubhendu-vimal"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-2.5 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://github.com/Shubhendu123"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-2.5 border border-zinc-300 rounded-lg hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  GitHub
+                </a>
+              </div>
+            </div>
+            <div className="flex-shrink-0">
+              <Image
+                src="/profile.jpeg"
+                alt="Shubhendu Vimal"
+                width={192}
+                height={192}
+                className="rounded-full object-cover w-48 h-48 ring-4 ring-zinc-200 dark:ring-zinc-700"
+              />
+            </div>
           </div>
         </div>
       </section>
