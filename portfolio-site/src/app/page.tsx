@@ -206,20 +206,20 @@ export default function Home() {
       {/* About */}
       <section id="about" className="py-16 px-6 bg-white dark:bg-zinc-900">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">About</h2>
+          <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">Shubhendu Vimal</h2>
+          <p className="text-lg font-medium text-zinc-500 dark:text-zinc-400 mb-2">Principal PM &nbsp;|&nbsp; AI Products &amp; Enterprise Analytics</p>
+          <p className="text-zinc-500 dark:text-zinc-400 mb-8">
+            11+ years turning complex data into products people rely on — across finance, CPG, and operations at Oracle NetSuite and Fractal Analytics.
+          </p>
           <div className="prose dark:prose-invert max-w-2xl">
             <p className="text-zinc-600 dark:text-zinc-400">
-              Principal Product Manager at Oracle NetSuite with 11+ years of experience
-              shipping enterprise analytics and AI products. PhD in Finance, MBA.
+              I&apos;ve built ML-powered products across industries: AR collections forecasting, customer churn prediction, pricing optimization engines, and LLM-powered analytics assistants. If there&apos;s a decision buried in messy data, I&apos;ve probably built something to surface it.
             </p>
             <p className="text-zinc-600 dark:text-zinc-400 mt-4">
-              Previously at Fractal Analytics where I led product for Crux Intelligence
-              (CPG analytics), Asper.ai (Revenue Growth Management), and AIDE (Auto ML).
+              My edge: a PhD in Finance, a decade of hands-on AI product work, and the ability to sit with a data scientist in the morning, a business stakeholder in the afternoon, and a UX researcher the next day — and speak each language fluently.
             </p>
             <p className="text-zinc-600 dark:text-zinc-400 mt-4">
-              This portfolio demonstrates both my PM track record (real enterprise work)
-              and my technical fluency (hands-on AI projects). The differentiator:
-              most PMs have case studies OR demos. I have both.
+              This portfolio is two things: the PM judgment behind real enterprise work (sanitized case studies from Oracle and Fractal), and the AI tools I&apos;m building myself — because the best AI PMs ship, not just spec.
             </p>
           </div>
         </div>
@@ -249,7 +249,7 @@ export default function Home() {
               GitHub
             </a>
             <a
-              href="mailto:shubhendu@gmail.com"
+              href="mailto:shubhendus@gmail.com"
               className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
             >
               Email
