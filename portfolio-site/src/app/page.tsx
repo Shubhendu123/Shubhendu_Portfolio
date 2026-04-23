@@ -101,11 +101,11 @@ export default function Home() {
       {/* Hero */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">
-            I&apos;ve shipped AI products for CFOs. Now I&apos;m building them myself.
+          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+            Shubhendu Vimal &mdash; Principal PM | AI Products &amp; Enterprise Analytics
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-8">
-            Principal PM at Oracle NetSuite and Fractal Analytics — 11 years turning finance pain into ML-powered products. This portfolio shows the thinking behind the work, and the AI tools I&apos;m building next.
+            11+ years building AI-powered products from early-stage models to enterprise-scale platforms.
           </p>
           <div className="flex gap-4">
             <a
