@@ -110,7 +110,7 @@ export default function Home() {
           </p>
           <div className="flex gap-4">
             <a
-              href="https://linkedin.com/in/shubhenduvimal"
+              href="https://linkedin.com/in/shubhendu-vimal"
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors"
@@ -234,7 +234,7 @@ export default function Home() {
           </p>
           <div className="flex gap-6 text-sm">
             <a
-              href="https://linkedin.com/in/shubhenduvimal"
+              href="https://linkedin.com/in/shubhendu-vimal"
               target="_blank"
               rel="noopener noreferrer"
               className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
