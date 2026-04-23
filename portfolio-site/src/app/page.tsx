@@ -102,11 +102,10 @@ export default function Home() {
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">
-            Principal PM who builds AI products
+            I&apos;ve shipped AI products for CFOs. Now I&apos;m building them myself.
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-8">
-            11+ years shipping enterprise SaaS at Oracle and Fractal Analytics.
-            Now building AI-native tools to prove I understand the technology I manage.
+            Principal PM at Oracle NetSuite and Fractal Analytics — 11 years turning finance pain into ML-powered products. This portfolio shows the thinking behind the work, and the AI tools I&apos;m building next.
           </p>
           <div className="flex gap-4">
             <a
