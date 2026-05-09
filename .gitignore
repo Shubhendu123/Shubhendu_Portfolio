@@ -49,3 +49,4 @@ chroma_db/
 # Secrets
 *.pem
 credentials.json
+next-env.d.ts
