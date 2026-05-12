@@ -5,38 +5,44 @@ const caseStudies = [
   {
     id: "A1",
     title: "NSAW Simplification Initiative",
-    metric: "56+ escalations analyzed",
-    description: "12 journeys identified, priority matrix, P0/P1/P2 roadmap",
+    metric: "400+ escalations · 12 journeys · 2-yr analysis",
+    description: "Identified 3 systemic root causes behind all escalations. Built P0/P1/P2 roadmap across 3 product teams.",
+    href: "/case-studies/a1",
   },
   {
     id: "A2",
     title: "Test Drive Infrastructure Cleanup",
     metric: "~$800K/yr savings",
     description: "426 instances categorized, 7-department outreach, ownership model",
+    href: null,
   },
   {
     id: "A3",
     title: "Storage Usage Tile & API",
     metric: "10 API specs",
     description: "Full requirement doc, 3-tier threshold logic, UI state design",
+    href: null,
   },
   {
     id: "A4",
     title: "Configuration Page Redesign",
     metric: "1-click navigation",
     description: "Dual-gateway approach, task-oriented layout, before/after UX",
+    href: null,
   },
   {
     id: "A5",
     title: "Excess Capacity Investigation",
     metric: "~$200K/yr recovery",
     description: "16-customer audit, anomaly identification, pricing fix",
+    href: null,
   },
   {
     id: "A6",
     title: "Smart Landing Page MVP",
     metric: "Shipped without dependency",
     description: "Constraint-driven design, URL-based approach, role prioritization",
+    href: null,
   },
 ];
 
@@ -158,23 +164,34 @@ export default function Home() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {caseStudies.map((study) => (
-              <div
-                key={study.id}
-                className="p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors"
-              >
-                <span className="text-xs font-mono text-zinc-500">{study.id}</span>
-                <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mt-1">
-                  {study.title}
-                </h3>
-                <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-2">
-                  {study.metric}
-                </p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
-                  {study.description}
-                </p>
-              </div>
-            ))}
+            {caseStudies.map((study) => {
+              const card = (
+                <div className={`p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl transition-colors h-full ${study.href ? "hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm cursor-pointer" : "hover:border-zinc-400 dark:hover:border-zinc-500"}`}>
+                  <div className="flex justify-between items-start">
+                    <span className="text-xs font-mono text-zinc-500">{study.id}</span>
+                    {study.href && (
+                      <span className="text-xs text-blue-500 dark:text-blue-400 font-medium">Read →</span>
+                    )}
+                  </div>
+                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mt-1">
+                    {study.title}
+                  </h3>
+                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-2">
+                    {study.metric}
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
+                    {study.description}
+                  </p>
+                </div>
+              );
+              return study.href ? (
+                <Link key={study.id} href={study.href} className="block">
+                  {card}
+                </Link>
+              ) : (
+                <div key={study.id}>{card}</div>
+              );
+            })}
           </div>
         </div>
       </section>
