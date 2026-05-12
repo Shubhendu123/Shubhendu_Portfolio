@@ -172,14 +172,25 @@ const rootCauses = [
 ];
 
 const funnelStages = [
-  { label: "Enable & Provision", pct: 100, drop: 25, color: "#3b82f6", journey: "J1 · Instance Provisioning", badge: "P0", bc: "#dc2626", bb: "#fecaca" },
-  { label: "Instance Created", pct: 75, drop: 12, color: "#6366f1", journey: "J2 · User Management", badge: "P0", bc: "#dc2626", bb: "#fecaca" },
-  { label: "Users Provisioned", pct: 63, drop: 14, color: "#7c3aed", journey: "J3 · Pipeline Health", badge: "P0", bc: "#dc2626", bb: "#fecaca" },
-  { label: "Pipeline Running", pct: 49, drop: 11, color: "#b45309", journey: "J4–J5 · Data & Transforms", badge: "P0/P1", bc: "#92400e", bb: "#fde68a" },
-  { label: "Data Available", pct: 38, drop: 11, color: "#c2410c", journey: "J7 · OAC Report Building", badge: "P1", bc: "#c2410c", bb: "#fed7aa" },
-  { label: "Reports Built", pct: 27, drop: 9, color: "#dc2626", journey: "J9–J11 · Connectors / SSO / Storage", badge: "P2", bc: "#1d4ed8", bb: "#dbeafe" },
-  { label: "Value Realized", pct: 18, drop: 0, color: "#059669", journey: "", badge: "", bc: "", bb: "" },
+  { label: "Enable & Provision", pct: 100, drop: 25, color: "#3b82f6", journey: "J1 · Instance Provisioning", badge: "P0" },
+  { label: "Instance Created", pct: 75, drop: 12, color: "#6366f1", journey: "J2 · User Management", badge: "P0" },
+  { label: "Users Provisioned", pct: 63, drop: 14, color: "#7c3aed", journey: "J3 · Pipeline Health", badge: "P0" },
+  { label: "Pipeline Running", pct: 49, drop: 11, color: "#b45309", journey: "J4–J5 · Data & Transforms", badge: "P0/P1" },
+  { label: "Data Available", pct: 38, drop: 11, color: "#c2410c", journey: "J7 · OAC Report Building", badge: "P1" },
+  { label: "Reports Built", pct: 27, drop: 9, color: "#dc2626", journey: "J9–J11 · Connectors / SSO / Storage", badge: "P2" },
+  { label: "Value Realized", pct: 18, drop: 0, color: "#059669", journey: "", badge: "" },
 ];
+
+// Badge colors — two sets for light / dark (SVG can't use Tailwind media queries so we use a
+// data-scheme trick: the SVG itself is inside a card that flips colour via prefers-color-scheme,
+// but SVG fill attributes don't inherit CSS variables out of the box.  We use a single neutral
+// palette that is readable against BOTH white and zinc-900 backgrounds.
+function badgeColors(badge: string): { fill: string; text: string } {
+  if (badge.startsWith("P0")) return { fill: "#fee2e2", text: "#b91c1c" }; // red-100 / red-700
+  if (badge === "P1")         return { fill: "#ffedd5", text: "#c2410c" }; // orange-100 / orange-700
+  if (badge === "P2")         return { fill: "#dbeafe", text: "#1d4ed8" }; // blue-100 / blue-700
+  return { fill: "#f4f4f5", text: "#52525b" };
+}
 
 function CustomerFunnel() {
   const cx = 270;
@@ -257,17 +268,20 @@ function CustomerFunnel() {
                 <text x={annotX} y={midY - 6} fill="#ef4444" fontSize="13" fontWeight="800">
                   -{s.drop}% leak
                 </text>
-                <text x={annotX} y={midY + 10} fill="#9ca3af" fontSize="10">
+                <text x={annotX} y={midY + 10} className="fill-zinc-400 dark:fill-zinc-500" fontSize="10">
                   {s.journey}
                 </text>
-                {s.badge && (
-                  <>
-                    <rect x={annotX} y={midY + 16} width={s.badge.length * 7 + 8} height={14} rx="3" fill={s.bb}/>
-                    <text x={annotX + s.badge.length * 3.5 + 4} y={midY + 26} textAnchor="middle" fill={s.bc} fontSize="9" fontWeight="700">
-                      {s.badge}
-                    </text>
-                  </>
-                )}
+                {s.badge && (() => {
+                  const bc = badgeColors(s.badge);
+                  return (
+                    <>
+                      <rect x={annotX} y={midY + 16} width={s.badge.length * 7 + 8} height={14} rx="3" fill={bc.fill} opacity="0.85"/>
+                      <text x={annotX + s.badge.length * 3.5 + 4} y={midY + 26} textAnchor="middle" fill={bc.text} fontSize="9" fontWeight="700">
+                        {s.badge}
+                      </text>
+                    </>
+                  );
+                })()}
               </>
             )}
 
@@ -278,7 +292,7 @@ function CustomerFunnel() {
                 <text x={annotX} y={midY - 4} fill="#059669" fontSize="13" fontWeight="800">
                   Value Realized
                 </text>
-                <text x={annotX} y={midY + 12} fill="#9ca3af" fontSize="10">
+                <text x={annotX} y={midY + 12} className="fill-zinc-400 dark:fill-zinc-500" fontSize="10">
                   Goal: 100%
                 </text>
               </>
@@ -288,7 +302,7 @@ function CustomerFunnel() {
       })}
 
       {/* Bottom note */}
-      <text x={cx} y={svgH - 4} textAnchor="middle" fill="#52525b" fontSize="9">
+      <text x={cx} y={svgH - 4} textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize="9">
         Illustrative — derived from 400+ escalation patterns over 24 months
       </text>
     </svg>

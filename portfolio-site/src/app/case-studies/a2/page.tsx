@@ -3,10 +3,10 @@ import Link from "next/link";
 /* ── SVG: Instance Breakdown Bar Chart ── */
 function InstanceBreakdownChart() {
   const bars = [
-    { label: "Cleanup", count: 223, pct: 52, color: "#f97316", bg: "#fff7ed" },
-    { label: "No Action", count: 91, pct: 21, color: "#94a3b8", bg: "#f8fafc" },
-    { label: "In Use", count: 90, pct: 21, color: "#10b981", bg: "#f0fdf4" },
-    { label: "Orphan", count: 22, pct: 5, color: "#ef4444", bg: "#fef2f2" },
+    { label: "Cleanup", count: 223, pct: 52, color: "#f97316" },
+    { label: "No Action", count: 91, pct: 21, color: "#94a3b8" },
+    { label: "In Use", count: 90, pct: 21, color: "#10b981" },
+    { label: "Orphan", count: 22, pct: 5, color: "#ef4444" },
   ];
   const W = 480, H = bars.length * 52 + 20;
   return (
@@ -16,11 +16,11 @@ function InstanceBreakdownChart() {
         const barW = (b.pct / 52) * 300;
         return (
           <g key={b.label}>
-            <text x={0} y={y + 16} fontSize="12" fontWeight="600" fill="#374151">{b.label}</text>
-            <rect x={80} y={y} width={300} height={28} rx="6" fill="#f3f4f6"/>
+            <text x={0} y={y + 16} fontSize="12" fontWeight="600" className="fill-zinc-700 dark:fill-zinc-300">{b.label}</text>
+            <rect x={80} y={y} width={300} height={28} rx="6" className="fill-zinc-100 dark:fill-zinc-700"/>
             <rect x={80} y={y} width={barW} height={28} rx="6" fill={b.color} opacity="0.85"/>
             <text x={80 + barW + 8} y={y + 18} fontSize="12" fontWeight="700" fill={b.color}>{b.count}</text>
-            <text x={440} y={y + 18} fontSize="11" fill="#9ca3af" textAnchor="end">{b.pct}%</text>
+            <text x={440} y={y + 18} fontSize="11" className="fill-zinc-400 dark:fill-zinc-500" textAnchor="end">{b.pct}%</text>
           </g>
         );
       })}
@@ -48,8 +48,8 @@ function DepartmentChart() {
         const barW = (d.count / max) * 300;
         return (
           <g key={d.label}>
-            <text x={0} y={y + 15} fontSize="11" fontWeight="600" fill="#374151">{d.label}</text>
-            <rect x={80} y={y} width={300} height={26} rx="5" fill="#f3f4f6"/>
+            <text x={0} y={y + 15} fontSize="11" fontWeight="600" className="fill-zinc-700 dark:fill-zinc-300">{d.label}</text>
+            <rect x={80} y={y} width={300} height={26} rx="5" className="fill-zinc-100 dark:fill-zinc-700"/>
             <rect x={80} y={y} width={barW} height={26} rx="5" fill={d.color} opacity="0.82"/>
             <text x={80 + barW + 6} y={y + 17} fontSize="11" fontWeight="700" fill={d.color}>{d.count}</text>
           </g>
@@ -78,7 +78,7 @@ function OwnershipDonut() {
   return (
     <div className="flex items-center gap-6">
       <svg width="140" height="140" viewBox="0 0 42 42" className="shrink-0">
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#e5e7eb" strokeWidth="5"/>
+        <circle cx={cx} cy={cy} r={r} fill="none" className="stroke-zinc-200 dark:stroke-zinc-700" strokeWidth="5"/>
         {circles.map((s) => (
           <circle
             key={s.label}
@@ -91,8 +91,8 @@ function OwnershipDonut() {
             strokeLinecap="round"
           />
         ))}
-        <text x={cx} y={cy - 1} textAnchor="middle" fontSize="7" fontWeight="800" fill="#111827">81%</text>
-        <text x={cx} y={cy + 5} textAnchor="middle" fontSize="3.2" fill="#6b7280">covered</text>
+        <text x={cx} y={cy - 1} textAnchor="middle" fontSize="7" fontWeight="800" className="fill-zinc-900 dark:fill-zinc-100">81%</text>
+        <text x={cx} y={cy + 5} textAnchor="middle" fontSize="3.2" className="fill-zinc-500 dark:fill-zinc-400">covered</text>
       </svg>
       <div className="flex flex-col gap-2">
         {segments.map((s) => (
