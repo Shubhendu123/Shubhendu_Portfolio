@@ -166,11 +166,17 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {caseStudies.map((study) => {
               const card = (
-                <div className={`p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl transition-colors h-full ${study.href ? "hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm cursor-pointer" : "hover:border-zinc-400 dark:hover:border-zinc-500"}`}>
+                <div className={`p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl transition-colors h-full ${study.href ? "hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm cursor-pointer" : "opacity-60 hover:border-zinc-400 dark:hover:border-zinc-500"}`}>
                   <div className="flex justify-between items-start">
                     <span className="text-xs font-mono text-zinc-500">{study.id}</span>
-                    {study.href && (
-                      <span className="text-xs text-blue-500 dark:text-blue-400 font-medium">Read →</span>
+                    {study.href ? (
+                      <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 rounded-full font-medium">
+                        Case Study
+                      </span>
+                    ) : (
+                      <span className="text-xs px-2 py-0.5 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 rounded-full">
+                        Coming Soon
+                      </span>
                     )}
                   </div>
                   <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mt-1">
@@ -182,6 +188,11 @@ export default function Home() {
                   <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
                     {study.description}
                   </p>
+                  {study.href && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-3 font-medium">
+                      Read →
+                    </p>
+                  )}
                 </div>
               );
               return study.href ? (
