@@ -43,6 +43,14 @@ const caseStudies = [
 const aiProjects = [
   {
     id: "P0",
+    title: "AskERP",
+    skill: "Agentic RAG · Natural Language Analytics · Multi-Agent",
+    description: "Conversational analytics agent for ERP data. Ask in plain English — a reasoning agent interprets intent, retrieves the right data, and returns a narrated insight with automatic driver analysis across segments, categories, and regions.",
+    status: "live",
+    href: "https://askerp.vercel.app",
+  },
+  {
+    id: "P1",
     title: "PRD Generator",
     skill: "Multi-Agent Orchestration",
     description: "AI-generated PRDs reviewed by engineer, designer, executive agents",
@@ -50,20 +58,12 @@ const aiProjects = [
     href: null,
   },
   {
-    id: "P1",
+    id: "P2",
     title: "RAG NSAW Assistant",
     skill: "RAG Architecture",
     description: "Document Q&A with citation tracking and RAGAS evaluation",
     status: "coming",
     href: null,
-  },
-  {
-    id: "P2",
-    title: "AskERP",
-    skill: "NL→SQL · Tool Use · Multi-Agent",
-    description: "Ask plain-English questions about ERP data. Claude generates SQL, runs it on DuckDB, narrates the result, and breaks down drivers by segment, category, and region.",
-    status: "live",
-    href: "https://askerp.vercel.app",
   },
   {
     id: "P3",
