@@ -21,9 +21,8 @@ function AllocationChart() {
 
   return (
     <svg viewBox={`0 0 680 ${H}`} className="w-full" aria-label="Allocated vs actual storage used">
-      {/* Column headers */}
-      <text x={130} y={14} fontSize="9" fontWeight="600" fill="#6b7280" textAnchor="middle">ALLOCATED</text>
-      <text x={480} y={14} fontSize="9" fontWeight="600" fill="#6b7280">FORMULA VERIFIED</text>
+      <text x={130} y={14} fontSize="9" fontWeight="600" textAnchor="middle" className="fill-zinc-400 dark:fill-[#6b7280]">ALLOCATED</text>
+      <text x={480} y={14} fontSize="9" fontWeight="600" className="fill-zinc-400 dark:fill-[#6b7280]">FORMULA VERIFIED</text>
 
       {customers.map((c, i) => {
         const y = i * rowH + 24;
@@ -34,26 +33,18 @@ function AllocationChart() {
 
         return (
           <g key={c.name}>
-            {/* Customer label */}
-            <text x={0} y={y + 18} fontSize="11" fontWeight="600" fill="#e5e7eb">{c.name}</text>
-            <text x={0} y={y + 30} fontSize="9" fill="#6b7280">{c.packs} user packs</text>
+            <text x={0} y={y + 18} fontSize="11" fontWeight="600" className="fill-zinc-800 dark:fill-[#e5e7eb]">{c.name}</text>
+            <text x={0} y={y + 30} fontSize="9" className="fill-zinc-400 dark:fill-[#6b7280]">{c.packs} user packs</text>
 
-            {/* Allocated bar (background) */}
-            <rect x={90} y={y + 4} width={allocBarW} height={24} rx="5" fill="#1f2937"/>
-            {/* Used bar (foreground) */}
+            <rect x={90} y={y + 4} width={allocBarW} height={24} rx="5" className="fill-zinc-200 dark:fill-[#1f2937]"/>
             <rect x={90} y={y + 4} width={Math.max(usedBarW, 4)} height={24} rx="5" fill="#22d3ee" opacity="0.8"/>
 
-            {/* Allocated TB label */}
-            <text x={90 + allocBarW + 6} y={y + 19} fontSize="11" fontWeight="700" fill="#f3f4f6">
+            <text x={90 + allocBarW + 6} y={y + 19} fontSize="11" fontWeight="700" className="fill-zinc-800 dark:fill-[#f3f4f6]">
               {c.allocated} TB
             </text>
-
-            {/* Util % */}
             <text x={90 + allocBarW + 6} y={y + 30} fontSize="9" fill="#ef4444">
               {util}% used
             </text>
-
-            {/* Formula */}
             <text x={445} y={y + 19} fontSize="10" fontWeight="600" fill="#22d3ee">{c.formula} ✓</text>
           </g>
         );
@@ -82,7 +73,7 @@ function SchemaDonut({ segments }: { segments: { label: string; gb: number; colo
   return (
     <div className="flex flex-col sm:flex-row items-start gap-6">
       <svg width="130" height="130" viewBox="0 0 42 42" className="shrink-0">
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1f2937" strokeWidth="5" />
+        <circle cx={cx} cy={cy} r={r} fill="none" strokeWidth="5" className="stroke-zinc-200 dark:stroke-[#1f2937]" />
         {drawn.map((s) => (
           <circle
             key={s.label}
@@ -95,10 +86,10 @@ function SchemaDonut({ segments }: { segments: { label: string; gb: number; colo
             strokeLinecap="butt"
           />
         ))}
-        <text x={cx} y={cy - 2} textAnchor="middle" fontSize="5.5" fontWeight="800" fill="#e5e7eb">
+        <text x={cx} y={cy - 2} textAnchor="middle" fontSize="5.5" fontWeight="800" className="fill-zinc-800 dark:fill-[#e5e7eb]">
           {total.toFixed(0)}
         </text>
-        <text x={cx} y={cy + 4} textAnchor="middle" fontSize="3" fill="#6b7280">GB total</text>
+        <text x={cx} y={cy + 4} textAnchor="middle" fontSize="3" className="fill-zinc-400 dark:fill-[#6b7280]">GB total</text>
       </svg>
 
       <div className="flex flex-col gap-2.5 flex-1">
@@ -106,10 +97,10 @@ function SchemaDonut({ segments }: { segments: { label: string; gb: number; colo
           <div key={s.label} className="flex items-start gap-2">
             <span className="w-2.5 h-2.5 rounded-sm mt-0.5 shrink-0" style={{ background: s.color }} />
             <div>
-              <p className="text-xs font-semibold text-gray-200">{s.label}
+              <p className="text-xs font-semibold text-zinc-700 dark:text-gray-200">{s.label}
                 <span className="font-bold ml-2" style={{ color: s.color }}>{s.gb.toFixed(1)} GB</span>
               </p>
-              <p className="text-xs text-gray-500">{s.note}</p>
+              <p className="text-xs text-zinc-400 dark:text-gray-500">{s.note}</p>
             </div>
           </div>
         ))}
@@ -127,11 +118,11 @@ const anomalyTabs = [
     label: "Grand Home Mart",
     sub: "inst60016",
     stats: [
-      { label: "Allocated", value: "8 TB", color: "text-red-400" },
-      { label: "Entitled", value: "5 TB (Enterprise)", color: "text-gray-300" },
-      { label: "Actual Used", value: "313 GB", color: "text-cyan-400" },
-      { label: "Utilization", value: "~4%", color: "text-red-400" },
-      { label: "User Packs", value: "0 (was 250)", color: "text-amber-400" },
+      { label: "Allocated", value: "8 TB", color: "text-red-500 dark:text-red-400" },
+      { label: "Entitled", value: "5 TB (Enterprise)", color: "text-zinc-700 dark:text-gray-300" },
+      { label: "Actual Used", value: "313 GB", color: "text-cyan-600 dark:text-cyan-400" },
+      { label: "Utilization", value: "~4%", color: "text-red-500 dark:text-red-400" },
+      { label: "User Packs", value: "0 (was 250)", color: "text-amber-600 dark:text-amber-400" },
     ],
     rootCause: "Originally had 250 User Packs — which auto-provisioned 8 TB under the formula. User Packs were later reduced to zero, but ADW storage was never scaled back. No scale-down was triggered in the provisioning system.",
     schemas: [
@@ -147,11 +138,11 @@ const anomalyTabs = [
     label: "Consumer 2.0",
     sub: "inst10010",
     stats: [
-      { label: "Allocated", value: "5 TB", color: "text-red-400" },
-      { label: "Entitled", value: "3 TB (Premium)", color: "text-gray-300" },
-      { label: "Actual Used", value: "294 GB", color: "text-cyan-400" },
-      { label: "Utilization", value: "~6%", color: "text-red-400" },
-      { label: "Provisioned Users", value: "6", color: "text-amber-400" },
+      { label: "Allocated", value: "5 TB", color: "text-red-500 dark:text-red-400" },
+      { label: "Entitled", value: "3 TB (Premium)", color: "text-zinc-700 dark:text-gray-300" },
+      { label: "Actual Used", value: "294 GB", color: "text-cyan-600 dark:text-cyan-400" },
+      { label: "Utilization", value: "~6%", color: "text-red-500 dark:text-red-400" },
+      { label: "Provisioned Users", value: "6", color: "text-amber-600 dark:text-amber-400" },
     ],
     rootCause: "Downgraded from Enterprise to Premium in Dec 2025, but ADW storage remained at 5 TB instead of scaling down to the 3 TB Premium entitlement. Enterprise features (APEX, AI/ML Workbench) may still be accessible post-downgrade.",
     schemas: [
@@ -170,15 +161,15 @@ export default function ExcessCapacityCaseStudy() {
   const tab = anomalyTabs.find((t) => t.id === activeTab)!;
 
   return (
-    <div className="min-h-screen" style={{ background: "#0a0e17", color: "#e5e7eb" }}>
+    <div className="min-h-screen bg-white dark:bg-[#0a0e17] text-zinc-900 dark:text-[#e5e7eb]">
 
       {/* Header */}
-      <header className="border-b sticky top-0 z-10" style={{ borderColor: "#1f2937", background: "#0d1117" }}>
+      <header className="border-b sticky top-0 z-10 bg-white dark:bg-[#0d1117] border-zinc-200 dark:border-[#1f2937]">
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="font-semibold text-gray-300 hover:text-cyan-400 transition-colors text-sm">
+          <Link href="/" className="font-semibold text-zinc-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors text-sm">
             ← SV
           </Link>
-          <span className="text-xs font-mono text-gray-500">A3 / Case Study</span>
+          <span className="text-xs font-mono text-zinc-400 dark:text-gray-500">A3 / Case Study</span>
         </div>
       </header>
 
@@ -187,13 +178,13 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── HERO ── */}
         <div className="mb-20">
           <div className="flex items-center gap-3 mb-5">
-            <span className="text-xs font-mono px-2 py-1 rounded text-gray-400" style={{ background: "#1f2937" }}>A3</span>
-            <span className="text-xs font-semibold text-cyan-400 uppercase tracking-widest">Forensic Audit</span>
+            <span className="text-xs font-mono px-2 py-1 rounded text-zinc-500 dark:text-gray-400 bg-zinc-100 dark:bg-[#1f2937]">A3</span>
+            <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">Forensic Audit</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white leading-tight mb-6">
             Excess Capacity<br />Investigation
           </h1>
-          <p className="text-lg leading-relaxed mb-10 max-w-3xl" style={{ color: "#9ca3af" }}>
+          <p className="text-lg leading-relaxed mb-10 max-w-3xl text-zinc-500 dark:text-[#9ca3af]">
             A forensic audit of 100+ enterprise customers revealed a systemic gap between commercial entitlements
             and technical provisioning — uncovering ~$1M in recoverable capacity and a process breakdown
             spanning Provisioning, Finance, and Legal.
@@ -206,9 +197,9 @@ export default function ExcessCapacityCaseStudy() {
               { value: "5 TB", label: "Excess Storage Found", color: "#f59e0b" },
               { value: "4", label: "Root Causes Identified", color: "#ef4444" },
             ].map((m) => (
-              <div key={m.label} className="p-4 rounded-xl border" style={{ background: "#111827", borderColor: "#1f2937" }}>
+              <div key={m.label} className="p-4 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
                 <p className="text-2xl font-black mb-1" style={{ color: m.color }}>{m.value}</p>
-                <p className="text-xs" style={{ color: "#6b7280" }}>{m.label}</p>
+                <p className="text-xs text-zinc-400 dark:text-[#6b7280]">{m.label}</p>
               </div>
             ))}
           </div>
@@ -217,25 +208,24 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── SECTION 01: PROBLEM ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">01</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">01</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-4">The Problem</h2>
-          <p className="leading-relaxed mb-4" style={{ color: "#9ca3af" }}>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">The Problem</h2>
+          <p className="leading-relaxed mb-4 text-zinc-500 dark:text-[#9ca3af]">
             NSAW provisions ADW storage based on customer tier — Standard (1 TB), Premium (3 TB), Enterprise (5 TB).
             During a routine compliance review, 100+ customers were flagged with storage allocations significantly
-            exceeding their licensed entitlements, totaling <span className="text-white font-semibold">~$2.7M in combined ARR</span>.
+            exceeding their licensed entitlements, totaling <span className="text-zinc-900 dark:text-white font-semibold">~$2.7M in combined ARR</span>.
           </p>
-          <p className="leading-relaxed mb-8" style={{ color: "#9ca3af" }}>
+          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
             Legal and Finance needed a complete audit trail before proceeding with the Capacity Pack pricing decision —
             specifically whether to charge these customers for the excess or grandfather their existing allocations.
             The entire pricing proposal was blocked pending this investigation.
           </p>
 
-          {/* Why it was hard */}
-          <div className="p-5 rounded-xl border-l-4 border-red-500" style={{ background: "#1a0f0f", borderRightColor: "#1f2937", borderTopColor: "#1f2937", borderBottomColor: "#1f2937", borderRight: "1px solid #1f2937", borderTop: "1px solid #1f2937", borderBottom: "1px solid #1f2937" }}>
-            <p className="text-xs font-semibold text-red-400 uppercase tracking-widest mb-2">Why This Was Hard</p>
-            <p className="text-sm leading-relaxed" style={{ color: "#fca5a5" }}>
+          <div className="p-5 rounded-xl border-l-4 border-red-500 border border-zinc-200 dark:border-[#1f2937] bg-red-50 dark:bg-[#1a0f0f]">
+            <p className="text-xs font-semibold text-red-500 dark:text-red-400 uppercase tracking-widest mb-2">Why This Was Hard</p>
+            <p className="text-sm leading-relaxed text-red-700 dark:text-[#fca5a5]">
               No Jira SD tickets existed for 75+ of 100 customers. Fleet Manager showed no scaling activity whatsoever.
               The storage appeared out of thin air — no documentation, no audit trail, no owner.
               Standard investigation paths led nowhere.
@@ -246,10 +236,10 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── SECTION 02: INVESTIGATION TIMELINE ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">02</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">02</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-8">The Investigation</h2>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">The Investigation</h2>
 
           <div className="relative pl-10">
             <div className="absolute left-3.5 top-2 bottom-2 w-0.5" style={{ background: "linear-gradient(to bottom, #22d3ee, #10b981)" }} />
@@ -274,15 +264,15 @@ export default function ExcessCapacityCaseStudy() {
                 desc: "Categorized all 100+ customers into 4 buckets with documented root causes. Filed Jira SD tickets for the anomaly accounts. Established process requiring Provisioning Ops to CC Product on all future scale-up tickets. Delivered complete report to Legal and Compliance.",
                 color: "#10b981",
               },
-            ].map((item, i) => (
+            ].map((item) => (
               <div key={item.week} className="relative mb-8 last:mb-0">
-                <div className="absolute -left-10 w-7 h-7 rounded-full border-2 flex items-center justify-center text-sm"
-                  style={{ borderColor: item.color, background: "#0a0e17" }}>
+                <div className="absolute -left-10 w-7 h-7 rounded-full border-2 flex items-center justify-center text-sm bg-white dark:bg-[#0a0e17]"
+                  style={{ borderColor: item.color }}>
                   {item.icon}
                 </div>
                 <p className="text-xs font-mono font-bold uppercase tracking-widest mb-1" style={{ color: item.color }}>{item.week}</p>
-                <p className="font-bold text-white mb-1">{item.title}</p>
-                <p className="text-sm leading-relaxed" style={{ color: "#9ca3af" }}>{item.desc}</p>
+                <p className="font-bold text-zinc-900 dark:text-white mb-1">{item.title}</p>
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -291,37 +281,37 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── SECTION 03: BREAKTHROUGH ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">03</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">03</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-4">The Breakthrough</h2>
-          <p className="leading-relaxed mb-8" style={{ color: "#9ca3af" }}>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">The Breakthrough</h2>
+          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
             Working with Provisioning Ops, I discovered that every 20 User Packs automatically adds 1 TB of ADW
             storage on top of the base entitlement. This was by design — but commercial entitlement tiers did not
             account for it, creating a silent gap between what was sold and what was provisioned.
           </p>
 
           {/* Formula block */}
-          <div className="rounded-xl p-6 mb-8 border" style={{ background: "#0d1117", borderColor: "#22d3ee33" }}>
-            <p className="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-3">User Pack Provisioning Formula</p>
-            <div className="flex flex-wrap items-center gap-2 font-mono text-lg font-bold text-white">
-              <span className="text-gray-400">Base Entitlement</span>
-              <span className="text-cyan-400">+</span>
-              <span className="px-3 py-1 rounded text-cyan-400" style={{ background: "#1f2937" }}>⌊ User Packs ÷ 20 ⌋</span>
-              <span className="text-cyan-400">×</span>
-              <span className="text-amber-400">1 TB</span>
-              <span className="text-cyan-400">=</span>
-              <span className="text-white">Actual Provisioned Storage</span>
+          <div className="rounded-xl p-6 mb-8 border bg-zinc-100 dark:bg-[#0d1117] border-cyan-200 dark:border-[#22d3ee33]">
+            <p className="text-xs font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-3">User Pack Provisioning Formula</p>
+            <div className="flex flex-wrap items-center gap-2 font-mono text-lg font-bold">
+              <span className="text-zinc-500 dark:text-gray-400">Base Entitlement</span>
+              <span className="text-cyan-600 dark:text-cyan-400">+</span>
+              <span className="px-3 py-1 rounded text-cyan-600 dark:text-cyan-400 bg-zinc-200 dark:bg-[#1f2937]">⌊ User Packs ÷ 20 ⌋</span>
+              <span className="text-cyan-600 dark:text-cyan-400">×</span>
+              <span className="text-amber-500 dark:text-amber-400">1 TB</span>
+              <span className="text-cyan-600 dark:text-cyan-400">=</span>
+              <span className="text-zinc-900 dark:text-white">Actual Provisioned Storage</span>
             </div>
-            <p className="text-xs mt-3" style={{ color: "#6b7280" }}>
+            <p className="text-xs mt-3 text-zinc-400 dark:text-[#6b7280]">
               By design — but commercially invisible. No entitlement tier accounted for this auto-scaling behavior.
             </p>
           </div>
 
           {/* Verification chart */}
-          <div className="rounded-xl p-6 border" style={{ background: "#111827", borderColor: "#1f2937" }}>
-            <p className="text-sm font-semibold text-white mb-1">Allocated vs Actual Used — 5 Verified Customers</p>
-            <p className="text-xs mb-5" style={{ color: "#6b7280" }}>All 5 matched the formula exactly. Cyan bar = actual usage. Gray bar = allocated capacity.</p>
+          <div className="rounded-xl p-6 border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
+            <p className="text-sm font-semibold text-zinc-900 dark:text-white mb-1">Allocated vs Actual Used — 5 Verified Customers</p>
+            <p className="text-xs mb-5 text-zinc-400 dark:text-[#6b7280]">All 5 matched the formula exactly. Cyan bar = actual usage. Gray bar = allocated capacity.</p>
             <AllocationChart />
           </div>
         </section>
@@ -329,11 +319,11 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── SECTION 04: CATEGORIZATION ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">04</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">04</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-3">Systematic Categorization</h2>
-          <p className="leading-relaxed mb-8" style={{ color: "#9ca3af" }}>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-3">Systematic Categorization</h2>
+          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
             After cross-referencing fleet reports, provisioning data, Jira SD tickets, and User Pack quantities
             for each customer, all 100+ were classified into four distinct buckets.
           </p>
@@ -343,49 +333,61 @@ export default function ExcessCapacityCaseStudy() {
               {
                 count: "30", label: "User Pack Based — Verified",
                 desc: "Storage explained by User Pack quantities. Formula verified for each customer. Math matched exactly.",
-                color: "#22d3ee", borderColor: "#164e63", bg: "#083344",
+                accent: "#22d3ee",
+                cls: "bg-cyan-50 dark:bg-[#083344] border-l-4 border-l-cyan-400 border border-cyan-100 dark:border-[#164e63]",
+                countCls: "text-cyan-600 dark:text-cyan-400",
+                badgeCls: "text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-[#22d3ee20]",
               },
               {
                 count: "25", label: "Jira SD Ticket Available",
                 desc: "Scale-up documented via service desk tickets. Provisioning Ops had clear records. No anomaly.",
-                color: "#10b981", borderColor: "#065f46", bg: "#022c22",
+                accent: "#10b981",
+                cls: "bg-emerald-50 dark:bg-[#022c22] border-l-4 border-l-emerald-400 border border-emerald-100 dark:border-[#065f46]",
+                countCls: "text-emerald-600 dark:text-emerald-400",
+                badgeCls: "text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-[#10b98120]",
               },
               {
                 count: "32", label: "Storage Within Entitlement",
                 desc: "Current storage matches licensed tier. No excess detected. No action required.",
-                color: "#6b7280", borderColor: "#374151", bg: "#111827",
+                accent: "#6b7280",
+                cls: "bg-zinc-50 dark:bg-[#111827] border-l-4 border-l-zinc-400 border border-zinc-200 dark:border-[#374151]",
+                countCls: "text-zinc-500 dark:text-zinc-400",
+                badgeCls: "text-zinc-500 dark:text-zinc-400 bg-zinc-200 dark:bg-[#6b728020]",
               },
               {
                 count: "13", label: "Anomaly — Storage Not Scaled Down",
                 desc: "Storage exceeds entitlement with no documented reason. User Packs reduced / tier downgraded but storage persisted.",
-                color: "#ef4444", borderColor: "#7f1d1d", bg: "#1a0f0f",
+                accent: "#ef4444",
+                cls: "bg-red-50 dark:bg-[#1a0f0f] border-l-4 border-l-red-400 border border-red-100 dark:border-[#7f1d1d]",
+                countCls: "text-red-500 dark:text-red-400",
+                badgeCls: "text-red-500 dark:text-red-400 bg-red-100 dark:bg-[#ef444420]",
               },
             ].map((c) => (
-              <div key={c.label} className="p-5 rounded-xl border-l-4" style={{ background: c.bg, borderLeftColor: c.color, borderRight: `1px solid ${c.borderColor}`, borderTop: `1px solid ${c.borderColor}`, borderBottom: `1px solid ${c.borderColor}` }}>
+              <div key={c.label} className={`p-5 rounded-xl ${c.cls}`}>
                 <div className="flex items-start justify-between mb-2">
-                  <p className="text-3xl font-black" style={{ color: c.color }}>{c.count}</p>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded" style={{ color: c.color, background: `${c.color}20` }}>customers</span>
+                  <p className={`text-3xl font-black ${c.countCls}`}>{c.count}</p>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded ${c.badgeCls}`}>customers</span>
                 </div>
-                <p className="font-semibold text-white mb-1 text-sm">{c.label}</p>
-                <p className="text-xs leading-relaxed" style={{ color: "#9ca3af" }}>{c.desc}</p>
+                <p className="font-semibold text-zinc-900 dark:text-white mb-1 text-sm">{c.label}</p>
+                <p className="text-xs leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{c.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="px-4 py-3 rounded-lg text-sm" style={{ background: "#1f2937", color: "#d1d5db" }}>
-            <span className="text-cyan-400 font-bold">87 of 100+</span> customers resolved through investigation ·{" "}
-            <span className="text-red-400 font-bold">13 anomalies</span> required escalation and Jira SD filings
+          <div className="px-4 py-3 rounded-lg text-sm bg-zinc-100 dark:bg-[#1f2937] text-zinc-600 dark:text-[#d1d5db]">
+            <span className="text-cyan-600 dark:text-cyan-400 font-bold">87 of 100+</span> customers resolved through investigation ·{" "}
+            <span className="text-red-500 dark:text-red-400 font-bold">13 anomalies</span> required escalation and Jira SD filings
           </div>
         </section>
 
         {/* ── SECTION 05: ANOMALY DEEP DIVE ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">05</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">05</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-3">Anomaly Deep Dive</h2>
-          <p className="leading-relaxed mb-6" style={{ color: "#9ca3af" }}>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-3">Anomaly Deep Dive</h2>
+          <p className="leading-relaxed mb-6 text-zinc-500 dark:text-[#9ca3af]">
             Among the 13 anomaly accounts, two cases revealed the deepest investigation findings — storage that could
             not be explained by User Packs, Jira tickets, or entitlement tiers. Each required schema-level database
             investigation to understand what was actually consuming the space.
@@ -399,41 +401,45 @@ export default function ExcessCapacityCaseStudy() {
                 onClick={() => setActiveTab(t.id)}
                 className="px-4 py-2 rounded-lg text-sm font-semibold transition-all"
                 style={{
-                  background: activeTab === t.id ? "#164e63" : "#111827",
-                  color: activeTab === t.id ? "#22d3ee" : "#6b7280",
-                  border: `1px solid ${activeTab === t.id ? "#22d3ee66" : "#1f2937"}`,
+                  background: activeTab === t.id ? "#164e63" : undefined,
+                  color: activeTab === t.id ? "#22d3ee" : undefined,
+                  border: `1px solid ${activeTab === t.id ? "#22d3ee66" : "transparent"}`,
                 }}
+                data-active={activeTab === t.id ? "true" : "false"}
+                data-inactive={activeTab !== t.id ? "true" : "false"}
               >
-                {t.label}
-                <span className="ml-2 text-xs font-mono opacity-60">{t.sub}</span>
+                <span className={activeTab === t.id ? "text-cyan-400" : "text-zinc-500 dark:text-[#6b7280]"}>
+                  {t.label}
+                </span>
+                <span className={`ml-2 text-xs font-mono opacity-60 ${activeTab === t.id ? "text-cyan-400" : "text-zinc-400 dark:text-[#6b7280]"}`}>{t.sub}</span>
               </button>
             ))}
           </div>
 
           {/* Tab content */}
-          <div className="rounded-2xl border p-6" style={{ background: "#111827", borderColor: "#1f2937" }}>
+          <div className="rounded-2xl border p-6 bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
             {/* Stats row */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
               {tab.stats.map((s) => (
-                <div key={s.label} className="p-3 rounded-lg" style={{ background: "#0d1117" }}>
+                <div key={s.label} className="p-3 rounded-lg bg-zinc-100 dark:bg-[#0d1117]">
                   <p className={`text-lg font-black ${s.color}`}>{s.value}</p>
-                  <p className="text-xs mt-0.5" style={{ color: "#6b7280" }}>{s.label}</p>
+                  <p className="text-xs mt-0.5 text-zinc-400 dark:text-[#6b7280]">{s.label}</p>
                 </div>
               ))}
             </div>
 
             {/* Root cause */}
-            <div className="p-4 rounded-lg mb-6 border-l-4 border-amber-500" style={{ background: "#1c1204" }}>
-              <p className="text-xs font-semibold text-amber-400 uppercase tracking-widest mb-1">Root Cause</p>
-              <p className="text-sm leading-relaxed" style={{ color: "#fde68a" }}>{tab.rootCause}</p>
+            <div className="p-4 rounded-lg mb-6 border-l-4 border-amber-500 bg-amber-50 dark:bg-[#1c1204]">
+              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-1">Root Cause</p>
+              <p className="text-sm leading-relaxed text-amber-800 dark:text-[#fde68a]">{tab.rootCause}</p>
             </div>
 
             {/* Schema donut */}
             <div>
-              <p className="text-sm font-semibold text-white mb-4">Schema-Level Storage Breakdown</p>
+              <p className="text-sm font-semibold text-zinc-900 dark:text-white mb-4">Schema-Level Storage Breakdown</p>
               <SchemaDonut segments={tab.schemas} />
-              <div className="mt-4 p-3 rounded-lg border border-cyan-900/40" style={{ background: "#083344" }}>
-                <p className="text-xs text-cyan-300 leading-relaxed">
+              <div className="mt-4 p-3 rounded-lg border border-cyan-200 dark:border-cyan-900/40 bg-cyan-50 dark:bg-[#083344]">
+                <p className="text-xs text-cyan-700 dark:text-cyan-300 leading-relaxed">
                   <span className="font-bold">Finding:</span> {tab.finding}
                 </p>
               </div>
@@ -444,11 +450,11 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── SECTION 06: CROSS-FUNCTIONAL ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">06</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">06</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-3">Cross-Functional Orchestration</h2>
-          <p className="leading-relaxed mb-8" style={{ color: "#9ca3af" }}>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-3">Cross-Functional Orchestration</h2>
+          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
             No single team owned this problem. Resolution required coordinating across six functions —
             each holding a different piece of the puzzle.
           </p>
@@ -462,14 +468,14 @@ export default function ExcessCapacityCaseStudy() {
               { team: "Legal", person: "Brian", role: "Compliance review requirements, pricing proposal dependency and decision timeline", color: "#f87171" },
               { team: "Product Lead", person: "Himanshu", role: "Executive updates, final review before Legal and Compliance submission", color: "#fb923c" },
             ].map((s) => (
-              <div key={s.team} className="flex gap-4 p-4 rounded-xl border" style={{ background: "#111827", borderColor: "#1f2937" }}>
+              <div key={s.team} className="flex gap-4 p-4 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
                 <div className="w-1 rounded-full shrink-0" style={{ background: s.color }} />
                 <div>
                   <div className="flex items-baseline gap-2 mb-1">
-                    <p className="font-semibold text-sm text-white">{s.team}</p>
+                    <p className="font-semibold text-sm text-zinc-900 dark:text-white">{s.team}</p>
                     <span className="text-xs font-mono" style={{ color: s.color }}>{s.person}</span>
                   </div>
-                  <p className="text-xs leading-relaxed" style={{ color: "#9ca3af" }}>{s.role}</p>
+                  <p className="text-xs leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{s.role}</p>
                 </div>
               </div>
             ))}
@@ -479,10 +485,10 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── SECTION 07: OUTCOMES ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">07</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">07</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-8">Outcomes & Impact</h2>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">Outcomes & Impact</h2>
 
           <div className="grid md:grid-cols-2 gap-4">
             {[
@@ -507,10 +513,10 @@ export default function ExcessCapacityCaseStudy() {
                 highlight: "Root cause documented", hcolor: "#f59e0b",
               },
             ].map((o) => (
-              <div key={o.title} className="p-5 rounded-xl border" style={{ background: "#111827", borderColor: "#1f2937" }}>
+              <div key={o.title} className="p-5 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
                 <div className="text-2xl mb-3">{o.icon}</div>
-                <p className="font-bold text-white mb-1">{o.title}</p>
-                <p className="text-xs leading-relaxed mb-3" style={{ color: "#9ca3af" }}>{o.desc}</p>
+                <p className="font-bold text-zinc-900 dark:text-white mb-1">{o.title}</p>
+                <p className="text-xs leading-relaxed mb-3 text-zinc-500 dark:text-[#9ca3af]">{o.desc}</p>
                 <p className="text-sm font-bold" style={{ color: o.hcolor }}>{o.highlight}</p>
               </div>
             ))}
@@ -520,10 +526,10 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── SECTION 08: PM CRAFT ── */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-400">08</span>
-            <div className="flex-1 h-px" style={{ background: "#1f2937" }} />
+            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">08</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-8">PM Judgment on Display</h2>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">PM Judgment on Display</h2>
 
           <div className="grid md:grid-cols-2 gap-4">
             {[
@@ -534,11 +540,11 @@ export default function ExcessCapacityCaseStudy() {
               { title: "Process design", desc: "Designed a lightweight fix (CC on Jira SD tickets) that prevents the gap from recurring without adding overhead or bureaucracy to existing workflows." },
               { title: "Executive communication", desc: "Translated a month-long forensic investigation into crisp executive updates with clear asks, status on each of 100+ accounts, and a decisive recommendation." },
             ].map((item) => (
-              <div key={item.title} className="flex gap-3 p-5 rounded-xl border" style={{ background: "#111827", borderColor: "#1f2937" }}>
-                <div className="w-1 rounded-full shrink-0 mt-1" style={{ background: "#22d3ee", minHeight: "100%" }} />
+              <div key={item.title} className="flex gap-3 p-5 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
+                <div className="w-1 rounded-full shrink-0 mt-1 bg-cyan-400 dark:bg-[#22d3ee]" style={{ minHeight: "100%" }} />
                 <div>
-                  <p className="font-semibold text-white mb-1 text-sm">{item.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: "#9ca3af" }}>{item.desc}</p>
+                  <p className="font-semibold text-zinc-900 dark:text-white mb-1 text-sm">{item.title}</p>
+                  <p className="text-xs leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -546,13 +552,11 @@ export default function ExcessCapacityCaseStudy() {
         </section>
 
         {/* Footer nav */}
-        <div className="pt-8 flex justify-between items-center border-t" style={{ borderColor: "#1f2937" }}>
-          <Link href="/" className="text-sm transition-colors" style={{ color: "#6b7280" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#22d3ee")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#6b7280")}>
+        <div className="pt-8 flex justify-between items-center border-t border-zinc-200 dark:border-[#1f2937]">
+          <Link href="/" className="text-sm text-zinc-400 dark:text-[#6b7280] hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">
             ← All case studies
           </Link>
-          <span className="text-xs font-mono" style={{ color: "#374151" }}>A3 · Excess Capacity Investigation</span>
+          <span className="text-xs font-mono text-zinc-300 dark:text-[#374151]">A3 · Excess Capacity Investigation</span>
         </div>
       </main>
     </div>
