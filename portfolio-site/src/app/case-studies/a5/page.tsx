@@ -178,7 +178,7 @@ export default function ExcessCapacityCaseStudy() {
           <Link href="/" className="font-semibold text-gray-300 hover:text-cyan-400 transition-colors text-sm">
             ← SV
           </Link>
-          <span className="text-xs font-mono text-gray-500">A5 / Case Study</span>
+          <span className="text-xs font-mono text-gray-500">A3 / Case Study</span>
         </div>
       </header>
 
@@ -187,7 +187,7 @@ export default function ExcessCapacityCaseStudy() {
         {/* ── HERO ── */}
         <div className="mb-20">
           <div className="flex items-center gap-3 mb-5">
-            <span className="text-xs font-mono px-2 py-1 rounded text-gray-400" style={{ background: "#1f2937" }}>A5</span>
+            <span className="text-xs font-mono px-2 py-1 rounded text-gray-400" style={{ background: "#1f2937" }}>A3</span>
             <span className="text-xs font-semibold text-cyan-400 uppercase tracking-widest">Forensic Audit</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
@@ -552,7 +552,7 @@ export default function ExcessCapacityCaseStudy() {
             onMouseLeave={(e) => (e.currentTarget.style.color = "#6b7280")}>
             ← All case studies
           </Link>
-          <span className="text-xs font-mono" style={{ color: "#374151" }}>A5 · Excess Capacity Investigation</span>
+          <span className="text-xs font-mono" style={{ color: "#374151" }}>A3 · Excess Capacity Investigation</span>
         </div>
       </main>
     </div>
