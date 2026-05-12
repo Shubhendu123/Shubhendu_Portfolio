@@ -97,11 +97,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="font-semibold text-zinc-900 dark:text-zinc-100">SV</span>
           <nav className="flex gap-6 text-sm">
-            <Link href="#case-studies" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
-              Case Studies
-            </Link>
             <Link href="#projects" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
               AI Projects
+            </Link>
+            <Link href="#case-studies" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
+              Case Studies
             </Link>
             <Link href="#about" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
               About
@@ -153,66 +153,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Case Studies */}
-      <section id="case-studies" className="py-16 px-6 bg-white dark:bg-zinc-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-10">
-            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Track A</span>
-            <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">Real PM Work</h2>
-            <p className="text-zinc-600 dark:text-zinc-400 mt-2">
-              Sanitized case studies from Oracle NetSuite demonstrating Principal PM judgment at enterprise scale.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {caseStudies.map((study) => {
-              const card = (
-                <div className={`p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl transition-colors h-full ${study.href ? "hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm cursor-pointer" : "opacity-60 hover:border-zinc-400 dark:hover:border-zinc-500"}`}>
-                  <div className="flex justify-between items-start">
-                    <span className="text-xs font-mono text-zinc-500">{study.id}</span>
-                    {study.href ? (
-                      <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 rounded-full font-medium">
-                        Case Study
-                      </span>
-                    ) : (
-                      <span className="text-xs px-2 py-0.5 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 rounded-full">
-                        Coming Soon
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mt-1">
-                    {study.title}
-                  </h3>
-                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-2">
-                    {study.metric}
-                  </p>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
-                    {study.description}
-                  </p>
-                  {study.href && (
-                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-3 font-medium">
-                      Read →
-                    </p>
-                  )}
-                </div>
-              );
-              return study.href ? (
-                <Link key={study.id} href={study.href} className="block">
-                  {card}
-                </Link>
-              ) : (
-                <div key={study.id}>{card}</div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* AI Projects */}
-      <section id="projects" className="py-16 px-6">
+      <section id="projects" className="py-16 px-6 bg-white dark:bg-zinc-900">
         <div className="max-w-6xl mx-auto">
           <div className="mb-10">
             <span className="text-sm font-medium text-green-600 dark:text-green-400">Track B</span>
-            <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">AI Demo Projects</h2>
+            <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">AI Projects</h2>
             <p className="text-zinc-600 dark:text-zinc-400 mt-2">
               Hands-on AI projects demonstrating technical fluency with modern architecture patterns.
             </p>
@@ -263,6 +209,60 @@ export default function Home() {
                 </a>
               ) : (
                 <div key={project.id}>{card}</div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies */}
+      <section id="case-studies" className="py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-10">
+            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Track A</span>
+            <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">PM Case Studies</h2>
+            <p className="text-zinc-600 dark:text-zinc-400 mt-2">
+              Sanitized case studies from Oracle NetSuite demonstrating Principal PM judgment at enterprise scale.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {caseStudies.map((study) => {
+              const card = (
+                <div className={`p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl transition-colors h-full ${study.href ? "hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm cursor-pointer" : "opacity-60 hover:border-zinc-400 dark:hover:border-zinc-500"}`}>
+                  <div className="flex justify-between items-start">
+                    <span className="text-xs font-mono text-zinc-500">{study.id}</span>
+                    {study.href ? (
+                      <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 rounded-full font-medium">
+                        Case Study
+                      </span>
+                    ) : (
+                      <span className="text-xs px-2 py-0.5 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 rounded-full">
+                        Coming Soon
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mt-1">
+                    {study.title}
+                  </h3>
+                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-2">
+                    {study.metric}
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
+                    {study.description}
+                  </p>
+                  {study.href && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-3 font-medium">
+                      Read →
+                    </p>
+                  )}
+                </div>
+              );
+              return study.href ? (
+                <Link key={study.id} href={study.href} className="block">
+                  {card}
+                </Link>
+              ) : (
+                <div key={study.id}>{card}</div>
               );
             })}
           </div>
