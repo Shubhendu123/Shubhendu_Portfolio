@@ -12,9 +12,9 @@ const caseStudies = [
   {
     id: "A2",
     title: "Test Drive Infrastructure Cleanup",
-    metric: "~$800K/yr savings",
-    description: "426 instances categorized, 7-department outreach, ownership model",
-    href: null,
+    metric: "426 instances · 7 depts · ~$1M OCI savings",
+    description: "Three-layer ownership model, 88% gap recovery, zero business disruptions.",
+    href: "/case-studies/a2",
   },
   {
     id: "A3",
