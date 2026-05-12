@@ -47,6 +47,7 @@ const aiProjects = [
     skill: "Multi-Agent Orchestration",
     description: "AI-generated PRDs reviewed by engineer, designer, executive agents",
     status: "live",
+    href: null,
   },
   {
     id: "P1",
@@ -54,13 +55,15 @@ const aiProjects = [
     skill: "RAG Architecture",
     description: "Document Q&A with citation tracking and RAGAS evaluation",
     status: "coming",
+    href: null,
   },
   {
     id: "P2",
-    title: "Financial Analyst Agent",
-    skill: "Tool Use & Guardrails",
-    description: "Multi-agent system for revenue analysis and pricing simulation",
-    status: "coming",
+    title: "AskERP",
+    skill: "NL→SQL · Tool Use · Multi-Agent",
+    description: "Ask plain-English questions about ERP data. Claude generates SQL, runs it on DuckDB, narrates the result, and breaks down drivers by segment, category, and region.",
+    status: "live",
+    href: "https://askerp.vercel.app",
   },
   {
     id: "P3",
@@ -68,6 +71,7 @@ const aiProjects = [
     skill: "MCP Protocol",
     description: "AI-assisted connector setup using Model Context Protocol",
     status: "coming",
+    href: null,
   },
   {
     id: "P4",
@@ -75,6 +79,7 @@ const aiProjects = [
     skill: "Agentic Workflows",
     description: "End-to-end demand planning with human-in-the-loop approval",
     status: "coming",
+    href: null,
   },
 ];
 
@@ -185,34 +190,53 @@ export default function Home() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {aiProjects.map((project) => (
-              <div
-                key={project.id}
-                className="p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors"
-              >
-                <div className="flex justify-between items-start">
-                  <span className="text-xs font-mono text-zinc-500">{project.id}</span>
-                  {project.status === "live" ? (
-                    <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full">
-                      Live
-                    </span>
-                  ) : (
-                    <span className="text-xs px-2 py-0.5 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 rounded-full">
-                      Coming
-                    </span>
+            {aiProjects.map((project) => {
+              const card = (
+                <div
+                  className={`p-6 border border-zinc-200 dark:border-zinc-700 rounded-xl transition-colors h-full ${project.href ? "hover:border-green-400 dark:hover:border-green-500 cursor-pointer" : "hover:border-zinc-400 dark:hover:border-zinc-500"}`}
+                >
+                  <div className="flex justify-between items-start">
+                    <span className="text-xs font-mono text-zinc-500">{project.id}</span>
+                    {project.status === "live" ? (
+                      <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full">
+                        Live
+                      </span>
+                    ) : (
+                      <span className="text-xs px-2 py-0.5 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 rounded-full">
+                        Coming
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mt-1">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-green-600 dark:text-green-400 font-medium mt-2">
+                    {project.skill}
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
+                    {project.description}
+                  </p>
+                  {project.href && (
+                    <p className="text-xs text-green-600 dark:text-green-400 mt-3 font-medium">
+                      Try it →
+                    </p>
                   )}
                 </div>
-                <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mt-1">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-green-600 dark:text-green-400 font-medium mt-2">
-                  {project.skill}
-                </p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">
-                  {project.description}
-                </p>
-              </div>
-            ))}
+              );
+              return project.href ? (
+                <a
+                  key={project.id}
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  {card}
+                </a>
+              ) : (
+                <div key={project.id}>{card}</div>
+              );
+            })}
           </div>
         </div>
       </section>
