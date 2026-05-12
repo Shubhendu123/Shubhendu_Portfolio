@@ -17,6 +17,13 @@ const caseStudies = [
     href: "/case-studies/a2",
   },
   {
+    id: "A5",
+    title: "Excess Capacity Investigation",
+    metric: "100+ customers · ~$1M recovery · 4 root causes",
+    description: "Forensic audit across 100+ customers, anomaly identification, pricing decision unblocked.",
+    href: "/case-studies/a5",
+  },
+  {
     id: "A3",
     title: "Storage Usage Tile & API",
     metric: "10 API specs",
@@ -29,13 +36,6 @@ const caseStudies = [
     metric: "1-click navigation",
     description: "Dual-gateway approach, task-oriented layout, before/after UX",
     href: null,
-  },
-  {
-    id: "A5",
-    title: "Excess Capacity Investigation",
-    metric: "16 customers · ~$200K recovery · 4 root causes",
-    description: "16-customer audit, anomaly identification, pricing fix",
-    href: "/case-studies/a5",
   },
   {
     id: "A6",

@@ -188,21 +188,21 @@ export default function ExcessCapacityCaseStudy() {
         <div className="mb-20">
           <div className="flex items-center gap-3 mb-5">
             <span className="text-xs font-mono px-2 py-1 rounded text-gray-400" style={{ background: "#1f2937" }}>A5</span>
-            <span className="text-xs font-semibold text-cyan-400 uppercase tracking-widest">Oracle NetSuite · Principal PM · Forensic Audit</span>
+            <span className="text-xs font-semibold text-cyan-400 uppercase tracking-widest">Forensic Audit</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
             Excess Capacity<br />Investigation
           </h1>
           <p className="text-lg leading-relaxed mb-10 max-w-3xl" style={{ color: "#9ca3af" }}>
-            A forensic audit of 16 enterprise customers revealed a systemic gap between commercial entitlements
-            and technical provisioning — uncovering ~$200K in recoverable capacity and a process breakdown
+            A forensic audit of 100+ enterprise customers revealed a systemic gap between commercial entitlements
+            and technical provisioning — uncovering ~$1M in recoverable capacity and a process breakdown
             spanning Provisioning, Finance, and Legal.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { value: "16", label: "Customers Audited", color: "#22d3ee" },
-              { value: "~$200K", label: "Revenue Impact", color: "#10b981" },
+              { value: "100+", label: "Customers Audited", color: "#22d3ee" },
+              { value: "~$1M", label: "Revenue Impact", color: "#10b981" },
               { value: "5 TB", label: "Excess Storage Found", color: "#f59e0b" },
               { value: "4", label: "Root Causes Identified", color: "#ef4444" },
             ].map((m) => (
@@ -223,8 +223,8 @@ export default function ExcessCapacityCaseStudy() {
           <h2 className="text-2xl font-bold text-white mb-4">The Problem</h2>
           <p className="leading-relaxed mb-4" style={{ color: "#9ca3af" }}>
             NSAW provisions ADW storage based on customer tier — Standard (1 TB), Premium (3 TB), Enterprise (5 TB).
-            During a routine compliance review, 16 customers were flagged with storage allocations significantly
-            exceeding their licensed entitlements, totaling <span className="text-white font-semibold">$435K in combined ARR</span>.
+            During a routine compliance review, 100+ customers were flagged with storage allocations significantly
+            exceeding their licensed entitlements, totaling <span className="text-white font-semibold">~$2.7M in combined ARR</span>.
           </p>
           <p className="leading-relaxed mb-8" style={{ color: "#9ca3af" }}>
             Legal and Finance needed a complete audit trail before proceeding with the Capacity Pack pricing decision —
@@ -236,7 +236,7 @@ export default function ExcessCapacityCaseStudy() {
           <div className="p-5 rounded-xl border-l-4 border-red-500" style={{ background: "#1a0f0f", borderRightColor: "#1f2937", borderTopColor: "#1f2937", borderBottomColor: "#1f2937", borderRight: "1px solid #1f2937", borderTop: "1px solid #1f2937", borderBottom: "1px solid #1f2937" }}>
             <p className="text-xs font-semibold text-red-400 uppercase tracking-widest mb-2">Why This Was Hard</p>
             <p className="text-sm leading-relaxed" style={{ color: "#fca5a5" }}>
-              No Jira SD tickets existed for 12 of 16 customers. Fleet Manager showed no scaling activity whatsoever.
+              No Jira SD tickets existed for 75+ of 100 customers. Fleet Manager showed no scaling activity whatsoever.
               The storage appeared out of thin air — no documentation, no audit trail, no owner.
               Standard investigation paths led nowhere.
             </p>
@@ -256,7 +256,7 @@ export default function ExcessCapacityCaseStudy() {
             {[
               {
                 week: "Week 1", icon: "🔍", title: "Discovery",
-                desc: "Identified 16 customers with ADW storage exceeding entitlements. Shared customer list with Provisioning Ops — received scaling details for only 4 of 16. Fleet Manager showed no footprint of scale-up activity for the remaining 12. Dead end.",
+                desc: "Identified 100+ customers with ADW storage exceeding entitlements. Shared customer list with Provisioning Ops — received scaling details for fewer than 25 of 100+. Fleet Manager showed no footprint of scale-up activity for the remaining 75+. Dead end.",
                 color: "#22d3ee",
               },
               {
@@ -271,7 +271,7 @@ export default function ExcessCapacityCaseStudy() {
               },
               {
                 week: "Week 4", icon: "📋", title: "Resolution & Report",
-                desc: "Categorized all 16 customers into 4 buckets with documented root causes. Filed Jira SD tickets for 2 anomalies. Established process requiring Provisioning Ops to CC Product on all future scale-up tickets. Delivered complete report to Legal and Compliance.",
+                desc: "Categorized all 100+ customers into 4 buckets with documented root causes. Filed Jira SD tickets for the anomaly accounts. Established process requiring Provisioning Ops to CC Product on all future scale-up tickets. Delivered complete report to Legal and Compliance.",
                 color: "#10b981",
               },
             ].map((item, i) => (
@@ -335,28 +335,28 @@ export default function ExcessCapacityCaseStudy() {
           <h2 className="text-2xl font-bold text-white mb-3">Systematic Categorization</h2>
           <p className="leading-relaxed mb-8" style={{ color: "#9ca3af" }}>
             After cross-referencing fleet reports, provisioning data, Jira SD tickets, and User Pack quantities
-            for each customer, all 16 were classified into four distinct buckets.
+            for each customer, all 100+ were classified into four distinct buckets.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {[
               {
-                count: "5", label: "User Pack Based — Verified",
+                count: "30", label: "User Pack Based — Verified",
                 desc: "Storage explained by User Pack quantities. Formula verified for each customer. Math matched exactly.",
                 color: "#22d3ee", borderColor: "#164e63", bg: "#083344",
               },
               {
-                count: "4", label: "Jira SD Ticket Available",
+                count: "25", label: "Jira SD Ticket Available",
                 desc: "Scale-up documented via service desk tickets. Provisioning Ops had clear records. No anomaly.",
                 color: "#10b981", borderColor: "#065f46", bg: "#022c22",
               },
               {
-                count: "5", label: "Storage Within Entitlement",
+                count: "32", label: "Storage Within Entitlement",
                 desc: "Current storage matches licensed tier. No excess detected. No action required.",
                 color: "#6b7280", borderColor: "#374151", bg: "#111827",
               },
               {
-                count: "2", label: "Anomaly — Storage Not Scaled Down",
+                count: "13", label: "Anomaly — Storage Not Scaled Down",
                 desc: "Storage exceeds entitlement with no documented reason. User Packs reduced / tier downgraded but storage persisted.",
                 color: "#ef4444", borderColor: "#7f1d1d", bg: "#1a0f0f",
               },
@@ -373,8 +373,8 @@ export default function ExcessCapacityCaseStudy() {
           </div>
 
           <div className="px-4 py-3 rounded-lg text-sm" style={{ background: "#1f2937", color: "#d1d5db" }}>
-            <span className="text-cyan-400 font-bold">14 of 16</span> customers resolved through investigation ·{" "}
-            <span className="text-red-400 font-bold">2 anomalies</span> required escalation and Jira SD filings
+            <span className="text-cyan-400 font-bold">87 of 100+</span> customers resolved through investigation ·{" "}
+            <span className="text-red-400 font-bold">13 anomalies</span> required escalation and Jira SD filings
           </div>
         </section>
 
@@ -386,8 +386,9 @@ export default function ExcessCapacityCaseStudy() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-3">Anomaly Deep Dive</h2>
           <p className="leading-relaxed mb-6" style={{ color: "#9ca3af" }}>
-            Two accounts had storage that could not be explained by User Packs, Jira tickets, or entitlement tiers.
-            Each required schema-level database investigation to understand what was actually consuming the space.
+            Among the 13 anomaly accounts, two cases revealed the deepest investigation findings — storage that could
+            not be explained by User Packs, Jira tickets, or entitlement tiers. Each required schema-level database
+            investigation to understand what was actually consuming the space.
           </p>
 
           {/* Tabs */}
@@ -487,13 +488,13 @@ export default function ExcessCapacityCaseStudy() {
             {[
               {
                 icon: "💰", title: "Revenue Recovery",
-                desc: "~$200K in identifiable excess capacity across 2 anomaly accounts, enabling the Capacity Pack pricing decision for Finance and Legal.",
-                highlight: "~$200K", hcolor: "#10b981",
+                desc: "~$1M in identifiable excess capacity across anomaly accounts, enabling the Capacity Pack pricing decision for Finance and Legal.",
+                highlight: "~$1M", hcolor: "#10b981",
               },
               {
                 icon: "📊", title: "Complete Audit Trail",
-                desc: "All 16 customers categorized with documented root causes. Legal received actionable data to proceed with the pricing proposal — decision unblocked.",
-                highlight: "16/16 resolved", hcolor: "#22d3ee",
+                desc: "All 100+ customers categorized with documented root causes. Legal received actionable data to proceed with the pricing proposal — decision unblocked.",
+                highlight: "100+ resolved", hcolor: "#22d3ee",
               },
               {
                 icon: "🔧", title: "Process Fix",
@@ -529,9 +530,9 @@ export default function ExcessCapacityCaseStudy() {
               { title: "Forensic analysis", desc: "Traced storage anomalies across fleet reports, provisioning systems, DB schemas, and commercial entitlements — across 4 weeks and 6 teams — when no standard path led anywhere." },
               { title: "Stakeholder management", desc: "Coordinated 6 teams across Ops, Engineering, Legal, Finance, and Product — each holding a different piece of the puzzle — without formal authority over any of them." },
               { title: "Systems thinking", desc: "Connected the User Pack provisioning logic to commercial tier design, exposing a systemic gap that no single team could see from their vantage point." },
-              { title: "Business acumen", desc: "Framed technical findings in business terms — $200K recovery, grandfathering vs. charging, compliance risk, Capacity Pack pricing unblock — for a Legal and Finance audience." },
+              { title: "Business acumen", desc: "Framed technical findings in business terms — ~$1M recovery, grandfathering vs. charging, compliance risk, Capacity Pack pricing unblock — for a Legal and Finance audience." },
               { title: "Process design", desc: "Designed a lightweight fix (CC on Jira SD tickets) that prevents the gap from recurring without adding overhead or bureaucracy to existing workflows." },
-              { title: "Executive communication", desc: "Translated a month-long forensic investigation into crisp executive updates with clear asks, status on each of 16 accounts, and a decisive recommendation." },
+              { title: "Executive communication", desc: "Translated a month-long forensic investigation into crisp executive updates with clear asks, status on each of 100+ accounts, and a decisive recommendation." },
             ].map((item) => (
               <div key={item.title} className="flex gap-3 p-5 rounded-xl border" style={{ background: "#111827", borderColor: "#1f2937" }}>
                 <div className="w-1 rounded-full shrink-0 mt-1" style={{ background: "#22d3ee", minHeight: "100%" }} />
