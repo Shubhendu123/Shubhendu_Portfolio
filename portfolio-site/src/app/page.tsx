@@ -33,9 +33,9 @@ const caseStudies = [
   {
     id: "A5",
     title: "Excess Capacity Investigation",
-    metric: "~$200K/yr recovery",
+    metric: "16 customers · ~$200K recovery · 4 root causes",
     description: "16-customer audit, anomaly identification, pricing fix",
-    href: null,
+    href: "/case-studies/a5",
   },
   {
     id: "A6",
