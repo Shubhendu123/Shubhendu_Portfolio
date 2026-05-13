@@ -40,9 +40,9 @@ const caseStudies = [
   {
     id: "A6",
     title: "Smart Landing Page MVP",
-    metric: "Shipped without dependency",
-    description: "Constraint-driven design, URL-based approach, role prioritization",
-    href: null,
+    metric: "4–5 wks · 0 dependencies · 100% parity",
+    description: "Discovered OAC URLs are self-describing — shipped the full feature without a blocked API.",
+    href: "/case-studies/a6",
   },
 ];
 
