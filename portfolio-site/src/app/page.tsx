@@ -33,16 +33,16 @@ const caseStudies = [
   {
     id: "A5",
     title: "Excess Capacity Investigation",
-    metric: "16 customers · ~$200K/yr recovery",
-    description: "Schema-level forensics across 16 accounts. Surfaced 2 anomalies, proposed Capacity Pack SKU.",
-    href: null,
+    metric: "100+ customers · ~$1M revenue impact",
+    description: "Schema-level forensics uncovered a silent provisioning gap. 4 root causes, 13 anomalies escalated.",
+    href: "/case-studies/a5",
   },
   {
     id: "A6",
     title: "Smart Landing Page MVP",
-    metric: "Shipped without API dependency",
-    description: "Constraint-driven URL-based approach. Role-prioritized delivery without Access Token API.",
-    href: null,
+    metric: "Shipped in 4–5 wks · zero dependencies",
+    description: "Discovered OAC URLs encode dashboard names. Shipped full feature without the blocked Access Token API.",
+    href: "/case-studies/a6",
   },
 ];
 
