@@ -53,7 +53,7 @@ const aiProjects = [
     skill: "Agentic RAG · NL Analytics · Multi-Agent",
     description: "Conversational analytics agent for ERP data. Ask in plain English — a reasoning agent interprets intent, retrieves the right data, and returns a narrated insight with automatic driver analysis across segments, categories, and regions.",
     status: "live",
-    href: "https://askerp.vercel.app",
+    href: "https://askerp.vercel.app/chat",
   },
   {
     id: "P1",
