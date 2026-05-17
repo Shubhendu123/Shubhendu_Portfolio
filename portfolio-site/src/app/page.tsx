@@ -88,10 +88,6 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* Availability */}
-              <p className="text-xs text-[#9A9A9A] font-medium">
-                Open to AI PM roles · Bangalore · Available immediately
-              </p>
             </div>
 
             {/* Right: photo */}
