@@ -1,20 +1,45 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+@theme {
+  /* ── Color palette ───────────────────────────────────────── */
+  --color-cream:        #FAF7F2;
+  --color-cream-dark:   #F0EAE0;
+  --color-teal:         #0F6B6B;
+  --color-teal-hover:   #0D5C5C;
+  --color-teal-light:   #E8F3F3;
+  --color-teal-faint:   #F0F8F8;
+  --color-gold:         #C9A961;
+  --color-gold-light:   #FBF5E7;
+  --color-charcoal:     #1A1A1A;
+  --color-muted:        #5C5C5C;
+  --color-muted-light:  #9A9A9A;
+
+  /* ── Typography ──────────────────────────────────────────── */
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans:  var(--font-inter), system-ui, sans-serif;
+  --font-mono:  var(--font-geist-mono), "Courier New", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ── Base ────────────────────────────────────────────────────── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background-color: #FAF7F2;
+  color: #1A1A1A;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Smooth scroll ───────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Utility: serif headings ─────────────────────────────────── */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* ── Card border accent ──────────────────────────────────────── */
+.card-border {
+  border: 1px solid rgba(15, 107, 107, 0.12);
 }

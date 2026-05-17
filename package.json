@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "lightningcss": "^1.32.0",
+    "lightningcss-darwin-arm64": "^1.32.0"
+  }
+}
