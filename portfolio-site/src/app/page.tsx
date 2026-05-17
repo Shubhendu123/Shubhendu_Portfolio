@@ -44,6 +44,13 @@ const caseStudies = [
     description: "Discovered OAC URLs encode dashboard names. Shipped full feature without the blocked Access Token API.",
     href: "/case-studies/a6",
   },
+  {
+    id: "A7",
+    title: "Customer & User Mapping Logic",
+    metric: "3 systems · 3 roles · SSO-first identity design",
+    description: "Designed the cross-system mapping logic connecting NetSuite ERP customers and users to NSAW — role simplification, center-based prioritization, and SSO-only MVP scope.",
+    href: "/case-studies/a7",
+  },
 ];
 
 const aiProjects = [
@@ -181,7 +188,7 @@ export default function Home() {
               { value: "11+", label: "Years in PM" },
               { value: "$1M+", label: "Infra savings driven" },
               { value: "5", label: "AI projects built" },
-              { value: "6", label: "Enterprise case studies" },
+              { value: "7", label: "Enterprise case studies" },
             ].map((kpi) => (
               <div key={kpi.label} className="text-center">
                 <p className="text-3xl font-bold text-slate-900 tracking-tight">{kpi.value}</p>
