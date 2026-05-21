@@ -1,571 +1,529 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import CaseStudyGate from "@/components/CaseStudyGate";
 
-/* ─────────────────────────────────────────
-   SVG: Allocated vs Actual Used bar chart
-───────────────────────────────────────── */
-function AllocationChart() {
-  const customers = [
-    { name: "Smarte Carte", allocated: 8, usedGB: 310, packs: 60, formula: "5 + (60÷20) = 8" },
-    { name: "CFA Institute", allocated: 7, usedGB: 280, packs: 40, formula: "5 + (40÷20) = 7" },
-    { name: "TESSCO", allocated: 6, usedGB: 220, packs: 30, formula: "5 + (30÷20) = 6" },
-    { name: "Forest Lawn", allocated: 6, usedGB: 190, packs: 20, formula: "5 + (20÷20) = 6" },
-    { name: "Forged Fiber", allocated: 6, usedGB: 150, packs: 20, formula: "5 + (20÷20) = 6" },
-  ];
-  const maxAlloc = 8;
-  const barW = 300;
-  const rowH = 52;
-  const H = customers.length * rowH + 24;
-
-  return (
-    <svg viewBox={`0 0 680 ${H}`} className="w-full" aria-label="Allocated vs actual storage used">
-      <text x={130} y={14} fontSize="9" fontWeight="600" textAnchor="middle" className="fill-zinc-400 dark:fill-[#6b7280]">ALLOCATED</text>
-      <text x={480} y={14} fontSize="9" fontWeight="600" className="fill-zinc-400 dark:fill-[#6b7280]">FORMULA VERIFIED</text>
-
-      {customers.map((c, i) => {
-        const y = i * rowH + 24;
-        const allocBarW = (c.allocated / maxAlloc) * barW;
-        const usedFrac = (c.usedGB / 1000) / c.allocated;
-        const usedBarW = allocBarW * usedFrac;
-        const util = ((c.usedGB / 1000) / c.allocated * 100).toFixed(1);
-
-        return (
-          <g key={c.name}>
-            <text x={0} y={y + 18} fontSize="11" fontWeight="600" className="fill-zinc-800 dark:fill-[#e5e7eb]">{c.name}</text>
-            <text x={0} y={y + 30} fontSize="9" className="fill-zinc-400 dark:fill-[#6b7280]">{c.packs} user packs</text>
-
-            <rect x={90} y={y + 4} width={allocBarW} height={24} rx="5" className="fill-zinc-200 dark:fill-[#1f2937]"/>
-            <rect x={90} y={y + 4} width={Math.max(usedBarW, 4)} height={24} rx="5" fill="#22d3ee" opacity="0.8"/>
-
-            <text x={90 + allocBarW + 6} y={y + 19} fontSize="11" fontWeight="700" className="fill-zinc-800 dark:fill-[#f3f4f6]">
-              {c.allocated} TB
-            </text>
-            <text x={90 + allocBarW + 6} y={y + 30} fontSize="9" fill="#ef4444">
-              {util}% used
-            </text>
-            <text x={445} y={y + 19} fontSize="10" fontWeight="600" fill="#22d3ee">{c.formula} ✓</text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-/* ─────────────────────────────────────────
-   SVG: Schema Donut Chart
-───────────────────────────────────────── */
-function SchemaDonut({ segments }: { segments: { label: string; gb: number; color: string; note: string }[] }) {
-  const total = segments.reduce((s, x) => s + x.gb, 0);
-  const r = 15.9;
-  const cx = 21;
-  const cy = 21;
-  let offset = 25;
-
-  const drawn = segments.map((seg) => {
-    const pct = (seg.gb / total) * 100;
-    const el = { ...seg, pct, offset };
-    offset = ((offset - pct) % 100 + 100) % 100;
-    return el;
-  });
-
-  return (
-    <div className="flex flex-col sm:flex-row items-start gap-6">
-      <svg width="130" height="130" viewBox="0 0 42 42" className="shrink-0">
-        <circle cx={cx} cy={cy} r={r} fill="none" strokeWidth="5" className="stroke-zinc-200 dark:stroke-[#1f2937]" />
-        {drawn.map((s) => (
-          <circle
-            key={s.label}
-            cx={cx} cy={cy} r={r}
-            fill="none"
-            stroke={s.color}
-            strokeWidth="5"
-            strokeDasharray={`${s.pct.toFixed(1)} ${(100 - s.pct).toFixed(1)}`}
-            strokeDashoffset={s.offset}
-            strokeLinecap="butt"
-          />
-        ))}
-        <text x={cx} y={cy - 2} textAnchor="middle" fontSize="5.5" fontWeight="800" className="fill-zinc-800 dark:fill-[#e5e7eb]">
-          {total.toFixed(0)}
-        </text>
-        <text x={cx} y={cy + 4} textAnchor="middle" fontSize="3" className="fill-zinc-400 dark:fill-[#6b7280]">GB total</text>
-      </svg>
-
-      <div className="flex flex-col gap-2.5 flex-1">
-        {segments.map((s) => (
-          <div key={s.label} className="flex items-start gap-2">
-            <span className="w-2.5 h-2.5 rounded-sm mt-0.5 shrink-0" style={{ background: s.color }} />
-            <div>
-              <p className="text-xs font-semibold text-zinc-700 dark:text-gray-200">{s.label}
-                <span className="font-bold ml-2" style={{ color: s.color }}>{s.gb.toFixed(1)} GB</span>
-              </p>
-              <p className="text-xs text-zinc-400 dark:text-gray-500">{s.note}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────
-   Main Page
-───────────────────────────────────────── */
-const anomalyTabs = [
+const keyDecisions = [
   {
-    id: "ghm",
-    label: "Grand Home Mart",
-    sub: "inst60016",
-    stats: [
-      { label: "Allocated", value: "8 TB", color: "text-red-500 dark:text-red-400" },
-      { label: "Entitled", value: "5 TB (Enterprise)", color: "text-zinc-700 dark:text-gray-300" },
-      { label: "Actual Used", value: "313 GB", color: "text-cyan-600 dark:text-cyan-400" },
-      { label: "Utilization", value: "~4%", color: "text-red-500 dark:text-red-400" },
-      { label: "User Packs", value: "0 (was 250)", color: "text-amber-600 dark:text-amber-400" },
-    ],
-    rootCause: "Originally had 250 User Packs — which auto-provisioned 8 TB under the formula. User Packs were later reduced to zero, but ADW storage was never scaled back. No scale-down was triggered in the provisioning system.",
-    schemas: [
-      { label: "SSB (Demo Data)", gb: 162.42, color: "#ef4444", note: "Oracle sample dataset — should not be on a production instance" },
-      { label: "OAX$DW (NSAW Data)", gb: 137.60, color: "#22d3ee", note: "Actual analytics data" },
-      { label: "SYS (System)", gb: 10.86, color: "#6b7280", note: "System tables" },
-      { label: "Other", gb: 2.29, color: "#9ca3af", note: "Small Oracle schemas" },
-    ],
-    finding: "SSB demo data (162 GB) consumes more storage than actual NSAW data. Zero custom customer schemas — this instance is barely used.",
+    decision: "3 simple roles instead of mapping all NetSuite roles",
+    why: "NetSuite has 50+ granular roles. A 1:1 mapping would be unmanageable for admins and impossible to maintain as roles evolved. Simplifying to Admin / Author / Viewer gave customers governance control without complexity.",
+    impact: "Reduced user configuration support cases — the 3-role model was self-explanatory to admins with no training.",
   },
   {
-    id: "c20",
-    label: "Consumer 2.0",
-    sub: "inst10010",
-    stats: [
-      { label: "Allocated", value: "5 TB", color: "text-red-500 dark:text-red-400" },
-      { label: "Entitled", value: "3 TB (Premium)", color: "text-zinc-700 dark:text-gray-300" },
-      { label: "Actual Used", value: "294 GB", color: "text-cyan-600 dark:text-cyan-400" },
-      { label: "Utilization", value: "~6%", color: "text-red-500 dark:text-red-400" },
-      { label: "Provisioned Users", value: "6", color: "text-amber-600 dark:text-amber-400" },
-    ],
-    rootCause: "Downgraded from Enterprise to Premium in Dec 2025, but ADW storage remained at 5 TB instead of scaling down to the 3 TB Premium entitlement. Enterprise features (APEX, AI/ML Workbench) may still be accessible post-downgrade.",
-    schemas: [
-      { label: "SSB (Demo Data)", gb: 162.42, color: "#ef4444", note: "Same Oracle demo dataset — present on both anomaly instances" },
-      { label: "MRR_BILLING_DATA", gb: 76.04, color: "#f59e0b", note: "Customer own billing data — only real custom schema" },
-      { label: "SYS (System)", gb: 37.61, color: "#6b7280", note: "System tables" },
-      { label: "OAX$DW (NSAW Data)", gb: 9.35, color: "#22d3ee", note: "Minimal analytics data — 6 provisioned users" },
-      { label: "Other", gb: 8.24, color: "#9ca3af", note: "Infrastructure schemas" },
-    ],
-    finding: "76 GB in custom MRR_BILLING_DATA — the only customer with real custom data. Still: 5 TB allocated for 6 users consuming 294 GB total.",
+    decision: "SSO-only for MVP scope",
+    why: "SSO guarantees a reliable, verifiable identity. Without it, NSAW would need to manage passwords, handle account recovery, and maintain its own credential store — all out of scope for an analytics product.",
+    impact: "Eliminated an entire class of identity-related support issues. Customers on SSO had near-zero login failures.",
+  },
+  {
+    decision: "Center-based prioritization over flat ordering",
+    why: "Finance users should see AR Aging before Sales Pipeline. A flat alphabetical or admin-assigned-only list wouldn't reflect functional context. Center weighting made the landing page feel personalized without requiring user configuration.",
+    impact: "Directly enabled the Smart Landing Page MVP (A4) — the priority calculation was the core logic behind personalized dashboard ordering.",
+  },
+  {
+    decision: "Admin assigns dashboards; user self-service in Phase 2",
+    why: "For MVP, governance control was the priority. Giving users the ability to self-assign dashboards before admins had tooling to audit or override would create a support and audit risk.",
+    impact: "Clean separation of admin and user actions. Admin had full visibility; users had a curated, relevant experience on day one.",
+  },
+  {
+    decision: "NetSuite Account ID as primary key across all systems",
+    why: "Multiple systems (NSAW Console, OAC, provisioning backend) needed a shared identifier. The NetSuite Account ID was already a stable, unique key across the Oracle ecosystem.",
+    impact: "Enabled reliable cross-system lookups with no custom ID generation or sync issues.",
   },
 ];
 
-export default function ExcessCapacityCaseStudyPage() {
+const challenges = [
+  {
+    challenge: "Three systems, three identity models",
+    detail: "NetSuite, NSAW Console, and OAC each had their own user and role models. A user deleted in NetSuite wouldn't be removed from NSAW. An admin role in NetSuite didn't automatically mean admin access in OAC. Each system's concept of 'user' was slightly different.",
+    howISolved: "Designed a mapping layer where NSAW Console acted as the config layer — the single place admins managed users for both NSAW and OAC. Defined explicit mapping rules: NetSuite role → NSAW role → OAC access level. Documented the sync gaps as known limitations with workarounds until a full bidirectional sync could be built.",
+  },
+  {
+    challenge: "SSO misconfiguration = complete lockout with no recovery",
+    detail: "If an admin configured SSO incorrectly, every user — including the admin — could be locked out with no fallback authentication method. This was a live escalation pattern that had occurred multiple times before I joined.",
+    howISolved: "Specified a validation-before-activation requirement in the SSO setup flow: test the SSO configuration with a non-admin account before activating for all users. Proposed a breakglass admin recovery mechanism as a Phase 2 safety feature. For MVP, documented the test procedure prominently in setup guides.",
+  },
+  {
+    challenge: "Auto-provisioning vs. controlled access tension",
+    detail: "SSO auto-provisioning (creating a user on first login) was convenient but created a governance risk — anyone with valid SSO credentials could access NSAW as a Viewer without admin approval.",
+    howISolved: "Made auto-provisioning an admin-configurable toggle, defaulting to off. Admins who wanted frictionless onboarding could enable it; those with stricter access controls kept it off. Documented both modes with use-case guidance.",
+  },
+  {
+    challenge: "Dashboard URL fragility",
+    detail: "OAC dashboard URLs encoded the workbook name. If an admin renamed a workbook, the URL broke silently — users would get a 404 with no explanation.",
+    howISolved: "Specified URL validation on save in the User Management interface. Flagged this as a known limitation in documentation. Proposed a broken-URL detection and admin alert system as a roadmap item, deprioritized for MVP.",
+  },
+];
+
+const pmImpact = [
+  {
+    metric: "3 systems unified",
+    description: "Designed the logic that let NetSuite, NSAW Console, and OAC operate as a coherent user management experience — despite each having independent identity models.",
+  },
+  {
+    metric: "50+ roles → 3",
+    description: "Collapsed NetSuite's complex role hierarchy into Admin / Author / Viewer. Made user configuration self-service for admins who had previously needed support tickets for role changes.",
+  },
+  {
+    metric: "SSO-first architecture",
+    description: "Scoped MVP to SSO-enabled customers — the highest-reliability identity path. This eliminated a category of login and credential support issues from day one.",
+  },
+  {
+    metric: "Foundation for Smart Landing Page",
+    description: "The center-based priority calculation designed here directly powered the Smart Landing Page MVP (A4). Mapping logic was the prerequisite for personalized dashboard ordering.",
+  },
+];
+
+export default function MappingLogicCaseStudyPage() {
   return (
     <CaseStudyGate>
-      <ExcessCapacityCaseStudy />
+      <MappingLogicCaseStudy />
     </CaseStudyGate>
   );
 }
 
-function ExcessCapacityCaseStudy() {
-  const [activeTab, setActiveTab] = useState("ghm");
-  const tab = anomalyTabs.find((t) => t.id === activeTab)!;
-
+function MappingLogicCaseStudy() {
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0a0e17] text-zinc-900 dark:text-[#e5e7eb]">
-
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Header */}
-      <header className="border-b sticky top-0 z-10 bg-white dark:bg-[#0d1117] border-zinc-200 dark:border-[#1f2937]">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="font-semibold text-zinc-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors text-sm">
+      <header className="border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-10">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+          <Link href="/" className="font-semibold text-zinc-900 dark:text-zinc-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
             ← SV
           </Link>
-          <span className="text-xs font-mono text-zinc-400 dark:text-gray-500">A3 / Case Study</span>
+          <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">A5 / Case Study</span>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-16">
+      <main className="max-w-5xl mx-auto px-6 py-16">
 
-        {/* ── HERO ── */}
-        <div className="mb-20">
-          <div className="flex items-center gap-3 mb-5">
-            <span className="text-xs font-mono px-2 py-1 rounded text-zinc-500 dark:text-gray-400 bg-zinc-100 dark:bg-[#1f2937]">A3</span>
-            <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">Forensic Audit</span>
+        {/* Hero */}
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-xs font-mono px-2 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded">A5</span>
+            <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">Oracle NetSuite · Principal PM</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white leading-tight mb-6">
-            Excess Capacity<br />Investigation
+          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight mb-6">
+            Customer & User<br />Mapping Logic
           </h1>
-          <p className="text-lg leading-relaxed mb-10 max-w-3xl text-zinc-500 dark:text-[#9ca3af]">
-            A forensic audit of 100+ enterprise customers revealed a systemic gap between commercial entitlements
-            and technical provisioning — uncovering ~$1M in recoverable capacity and a process breakdown
-            spanning Provisioning, Finance, and Legal.
+          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed mb-10">
+            NSAW sits between NetSuite ERP and Oracle Analytics Cloud — three systems with three independent identity
+            models. I designed the mapping logic that made them behave as one: customer-level provisioning, user
+            identity flow, role simplification, center-based personalization, and SSO-first authentication.
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {/* Metrics bar */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { value: "100+", label: "Customers Audited", color: "#22d3ee" },
-              { value: "~$1M", label: "Revenue Impact", color: "#10b981" },
-              { value: "5 TB", label: "Excess Storage Found", color: "#f59e0b" },
-              { value: "4", label: "Root Causes Identified", color: "#ef4444" },
+              { value: "3", label: "Systems unified" },
+              { value: "3", label: "Roles (from 50+)" },
+              { value: "7", label: "Edge cases specified" },
+              { value: "SSO-first", label: "MVP identity scope" },
             ].map((m) => (
-              <div key={m.label} className="p-4 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
-                <p className="text-2xl font-black mb-1" style={{ color: m.color }}>{m.value}</p>
-                <p className="text-xs text-zinc-400 dark:text-[#6b7280]">{m.label}</p>
+              <div key={m.label} className="p-4 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{m.value}</p>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{m.label}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── SECTION 01: PROBLEM ── */}
+        {/* The Problem */}
         <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">01</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">The Problem</h2>
-          <p className="leading-relaxed mb-4 text-zinc-500 dark:text-[#9ca3af]">
-            NSAW provisions ADW storage based on customer tier — Standard (1 TB), Premium (3 TB), Enterprise (5 TB).
-            During a routine compliance review, 100+ customers were flagged with storage allocations significantly
-            exceeding their licensed entitlements, totaling <span className="text-zinc-900 dark:text-white font-semibold">~$2.7M in combined ARR</span>.
-          </p>
-          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
-            Legal and Finance needed a complete audit trail before proceeding with the Capacity Pack pricing decision —
-            specifically whether to charge these customers for the excess or grandfather their existing allocations.
-            The entire pricing proposal was blocked pending this investigation.
-          </p>
-
-          <div className="p-5 rounded-xl border-l-4 border-red-500 border border-zinc-200 dark:border-[#1f2937] bg-red-50 dark:bg-[#1a0f0f]">
-            <p className="text-xs font-semibold text-red-500 dark:text-red-400 uppercase tracking-widest mb-2">Why This Was Hard</p>
-            <p className="text-sm leading-relaxed text-red-700 dark:text-[#fca5a5]">
-              No Jira SD tickets existed for 75+ of 100 customers. Fleet Manager showed no scaling activity whatsoever.
-              The storage appeared out of thin air — no documentation, no audit trail, no owner.
-              Standard investigation paths led nowhere.
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">The Problem</h2>
+          <div className="space-y-4 text-zinc-600 dark:text-zinc-400 text-[15px] leading-relaxed">
+            <p>
+              When a NetSuite customer purchases NSAW, they expect a seamless experience — log into NetSuite, click
+              into analytics, see their data. The reality was a three-system configuration challenge that most
+              mid-market admins were not equipped to manage.
             </p>
-          </div>
-        </section>
-
-        {/* ── SECTION 02: INVESTIGATION TIMELINE ── */}
-        <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">02</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">The Investigation</h2>
-
-          <div className="relative pl-10">
-            <div className="absolute left-3.5 top-2 bottom-2 w-0.5" style={{ background: "linear-gradient(to bottom, #22d3ee, #10b981)" }} />
-            {[
-              {
-                week: "Week 1", icon: "🔍", title: "Discovery",
-                desc: "Identified 100+ customers with ADW storage exceeding entitlements. Shared customer list with Provisioning Ops — received scaling details for fewer than 25 of 100+. Fleet Manager showed no footprint of scale-up activity for the remaining 75+. Dead end.",
-                color: "#22d3ee",
-              },
-              {
-                week: "Week 2", icon: "🧮", title: "Root Cause Breakthrough",
-                desc: "Working with Provisioning Ops, uncovered the User Pack provisioning logic — every 20 packs auto-provisions 1 TB on top of base entitlement. Cross-referenced User Pack quantities and verified the math across 5 customers. Exact match across all 5.",
-                color: "#a78bfa",
-              },
-              {
-                week: "Week 3", icon: "🗄️", title: "Schema-Level Deep Dive",
-                desc: "Pulled schema-level DB breakdowns for the 2 anomaly accounts. Discovered SSB (Oracle demo dataset) consuming 162 GB on both production instances. Obtained provisioned user counts from Product Analytics. Investigated tier downgrade history.",
-                color: "#f59e0b",
-              },
-              {
-                week: "Week 4", icon: "📋", title: "Resolution & Report",
-                desc: "Categorized all 100+ customers into 4 buckets with documented root causes. Filed Jira SD tickets for the anomaly accounts. Established process requiring Provisioning Ops to CC Product on all future scale-up tickets. Delivered complete report to Legal and Compliance.",
-                color: "#10b981",
-              },
-            ].map((item) => (
-              <div key={item.week} className="relative mb-8 last:mb-0">
-                <div className="absolute -left-10 w-7 h-7 rounded-full border-2 flex items-center justify-center text-sm bg-white dark:bg-[#0a0e17]"
-                  style={{ borderColor: item.color }}>
-                  {item.icon}
-                </div>
-                <p className="text-xs font-mono font-bold uppercase tracking-widest mb-1" style={{ color: item.color }}>{item.week}</p>
-                <p className="font-bold text-zinc-900 dark:text-white mb-1">{item.title}</p>
-                <p className="text-sm leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── SECTION 03: BREAKTHROUGH ── */}
-        <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">03</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">The Breakthrough</h2>
-          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
-            Working with Provisioning Ops, I discovered that every 20 User Packs automatically adds 1 TB of ADW
-            storage on top of the base entitlement. This was by design — but commercial entitlement tiers did not
-            account for it, creating a silent gap between what was sold and what was provisioned.
-          </p>
-
-          {/* Formula block */}
-          <div className="rounded-xl p-6 mb-8 border bg-zinc-100 dark:bg-[#0d1117] border-cyan-200 dark:border-[#22d3ee33]">
-            <p className="text-xs font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-3">User Pack Provisioning Formula</p>
-            <div className="flex flex-wrap items-center gap-2 font-mono text-lg font-bold">
-              <span className="text-zinc-500 dark:text-gray-400">Base Entitlement</span>
-              <span className="text-cyan-600 dark:text-cyan-400">+</span>
-              <span className="px-3 py-1 rounded text-cyan-600 dark:text-cyan-400 bg-zinc-200 dark:bg-[#1f2937]">⌊ User Packs ÷ 20 ⌋</span>
-              <span className="text-cyan-600 dark:text-cyan-400">×</span>
-              <span className="text-amber-500 dark:text-amber-400">1 TB</span>
-              <span className="text-cyan-600 dark:text-cyan-400">=</span>
-              <span className="text-zinc-900 dark:text-white">Actual Provisioned Storage</span>
-            </div>
-            <p className="text-xs mt-3 text-zinc-400 dark:text-[#6b7280]">
-              By design — but commercially invisible. No entitlement tier accounted for this auto-scaling behavior.
+            <p>
+              NetSuite had its own user and role system. NSAW Console had its own. OAC had its own. A user added
+              in one system didn't automatically exist in the others. A role change in NetSuite didn't propagate.
+              A deleted employee in NetSuite remained an active user in NSAW until manually removed. Admins were
+              fielding tickets for basic user access issues that should have been self-service.
+            </p>
+            <p>
+              There was no documented mapping logic — no specification for how identities should flow from NetSuite
+              through NSAW and into OAC. Engineering teams were making implementation decisions without a coherent
+              model. Support was handling escalations with no canonical answer.
             </p>
           </div>
 
-          {/* Verification chart */}
-          <div className="rounded-xl p-6 border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
-            <p className="text-sm font-semibold text-zinc-900 dark:text-white mb-1">Allocated vs Actual Used — 5 Verified Customers</p>
-            <p className="text-xs mb-5 text-zinc-400 dark:text-[#6b7280]">All 5 matched the formula exactly. Cyan bar = actual usage. Gray bar = allocated capacity.</p>
-            <AllocationChart />
-          </div>
-        </section>
-
-        {/* ── SECTION 04: CATEGORIZATION ── */}
-        <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">04</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-3">Systematic Categorization</h2>
-          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
-            After cross-referencing fleet reports, provisioning data, Jira SD tickets, and User Pack quantities
-            for each customer, all 100+ were classified into four distinct buckets.
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
-            {[
-              {
-                count: "30", label: "User Pack Based — Verified",
-                desc: "Storage explained by User Pack quantities. Formula verified for each customer. Math matched exactly.",
-                accent: "#22d3ee",
-                cls: "bg-cyan-50 dark:bg-[#083344] border-l-4 border-l-cyan-400 border border-cyan-100 dark:border-[#164e63]",
-                countCls: "text-cyan-600 dark:text-cyan-400",
-                badgeCls: "text-cyan-600 dark:text-cyan-400 bg-cyan-100 dark:bg-[#22d3ee20]",
-              },
-              {
-                count: "25", label: "Jira SD Ticket Available",
-                desc: "Scale-up documented via service desk tickets. Provisioning Ops had clear records. No anomaly.",
-                accent: "#10b981",
-                cls: "bg-emerald-50 dark:bg-[#022c22] border-l-4 border-l-emerald-400 border border-emerald-100 dark:border-[#065f46]",
-                countCls: "text-emerald-600 dark:text-emerald-400",
-                badgeCls: "text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-[#10b98120]",
-              },
-              {
-                count: "32", label: "Storage Within Entitlement",
-                desc: "Current storage matches licensed tier. No excess detected. No action required.",
-                accent: "#6b7280",
-                cls: "bg-zinc-50 dark:bg-[#111827] border-l-4 border-l-zinc-400 border border-zinc-200 dark:border-[#374151]",
-                countCls: "text-zinc-500 dark:text-zinc-400",
-                badgeCls: "text-zinc-500 dark:text-zinc-400 bg-zinc-200 dark:bg-[#6b728020]",
-              },
-              {
-                count: "13", label: "Anomaly — Storage Not Scaled Down",
-                desc: "Storage exceeds entitlement with no documented reason. User Packs reduced / tier downgraded but storage persisted.",
-                accent: "#ef4444",
-                cls: "bg-red-50 dark:bg-[#1a0f0f] border-l-4 border-l-red-400 border border-red-100 dark:border-[#7f1d1d]",
-                countCls: "text-red-500 dark:text-red-400",
-                badgeCls: "text-red-500 dark:text-red-400 bg-red-100 dark:bg-[#ef444420]",
-              },
-            ].map((c) => (
-              <div key={c.label} className={`p-5 rounded-xl ${c.cls}`}>
-                <div className="flex items-start justify-between mb-2">
-                  <p className={`text-3xl font-black ${c.countCls}`}>{c.count}</p>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded ${c.badgeCls}`}>customers</span>
-                </div>
-                <p className="font-semibold text-zinc-900 dark:text-white mb-1 text-sm">{c.label}</p>
-                <p className="text-xs leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{c.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="px-4 py-3 rounded-lg text-sm bg-zinc-100 dark:bg-[#1f2937] text-zinc-600 dark:text-[#d1d5db]">
-            <span className="text-cyan-600 dark:text-cyan-400 font-bold">87 of 100+</span> customers resolved through investigation ·{" "}
-            <span className="text-red-500 dark:text-red-400 font-bold">13 anomalies</span> required escalation and Jira SD filings
-          </div>
-        </section>
-
-        {/* ── SECTION 05: ANOMALY DEEP DIVE ── */}
-        <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">05</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-3">Anomaly Deep Dive</h2>
-          <p className="leading-relaxed mb-6 text-zinc-500 dark:text-[#9ca3af]">
-            Among the 13 anomaly accounts, two cases revealed the deepest investigation findings — storage that could
-            not be explained by User Packs, Jira tickets, or entitlement tiers. Each required schema-level database
-            investigation to understand what was actually consuming the space.
-          </p>
-
-          {/* Tabs */}
-          <div className="flex gap-2 mb-6">
-            {anomalyTabs.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setActiveTab(t.id)}
-                className="px-4 py-2 rounded-lg text-sm font-semibold transition-all"
-                style={{
-                  background: activeTab === t.id ? "#164e63" : undefined,
-                  color: activeTab === t.id ? "#22d3ee" : undefined,
-                  border: `1px solid ${activeTab === t.id ? "#22d3ee66" : "transparent"}`,
-                }}
-                data-active={activeTab === t.id ? "true" : "false"}
-                data-inactive={activeTab !== t.id ? "true" : "false"}
-              >
-                <span className={activeTab === t.id ? "text-cyan-400" : "text-zinc-500 dark:text-[#6b7280]"}>
-                  {t.label}
-                </span>
-                <span className={`ml-2 text-xs font-mono opacity-60 ${activeTab === t.id ? "text-cyan-400" : "text-zinc-400 dark:text-[#6b7280]"}`}>{t.sub}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Tab content */}
-          <div className="rounded-2xl border p-6 bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
-            {/* Stats row */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-              {tab.stats.map((s) => (
-                <div key={s.label} className="p-3 rounded-lg bg-zinc-100 dark:bg-[#0d1117]">
-                  <p className={`text-lg font-black ${s.color}`}>{s.value}</p>
-                  <p className="text-xs mt-0.5 text-zinc-400 dark:text-[#6b7280]">{s.label}</p>
+          {/* Three system architecture */}
+          <div className="mt-8 p-6 bg-zinc-900 dark:bg-zinc-800 rounded-2xl text-white">
+            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-5">The Three-System Architecture</p>
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                {
+                  name: "NetSuite ERP",
+                  role: "Source",
+                  color: "border-blue-500/40 bg-blue-500/10",
+                  labelColor: "text-blue-300",
+                  items: ["Transactions & Records", "Users / Roles (50+)", "Account ID", "Subsidiaries"],
+                },
+                {
+                  name: "NSAW Console",
+                  role: "Config Layer",
+                  color: "border-indigo-500/40 bg-indigo-500/10",
+                  labelColor: "text-indigo-300",
+                  items: ["User Management", "Connector Setup", "Role Mapping", "Provisioning"],
+                },
+                {
+                  name: "OAC",
+                  role: "Analytics",
+                  color: "border-emerald-500/40 bg-emerald-500/10",
+                  labelColor: "text-emerald-300",
+                  items: ["Dashboards", "Workbooks", "Reports", "Visualizations"],
+                },
+              ].map((sys) => (
+                <div key={sys.name} className={`p-4 rounded-xl border ${sys.color}`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className={`text-sm font-bold ${sys.labelColor}`}>{sys.name}</p>
+                    <span className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider">{sys.role}</span>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {sys.items.map((item) => (
+                      <li key={item} className="text-xs text-zinc-400 flex gap-2">
+                        <span className="text-zinc-600 shrink-0">·</span>{item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
-
-            {/* Root cause */}
-            <div className="p-4 rounded-lg mb-6 border-l-4 border-amber-500 bg-amber-50 dark:bg-[#1c1204]">
-              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-1">Root Cause</p>
-              <p className="text-sm leading-relaxed text-amber-800 dark:text-[#fde68a]">{tab.rootCause}</p>
-            </div>
-
-            {/* Schema donut */}
-            <div>
-              <p className="text-sm font-semibold text-zinc-900 dark:text-white mb-4">Schema-Level Storage Breakdown</p>
-              <SchemaDonut segments={tab.schemas} />
-              <div className="mt-4 p-3 rounded-lg border border-cyan-200 dark:border-cyan-900/40 bg-cyan-50 dark:bg-[#083344]">
-                <p className="text-xs text-cyan-700 dark:text-cyan-300 leading-relaxed">
-                  <span className="font-bold">Finding:</span> {tab.finding}
-                </p>
-              </div>
+            <div className="mt-4 flex items-center justify-center gap-3 text-xs text-zinc-500">
+              <span className="px-3 py-1 bg-zinc-800 rounded-full">NetSuite Account ID → primary key across all 3 systems</span>
             </div>
           </div>
         </section>
 
-        {/* ── SECTION 06: CROSS-FUNCTIONAL ── */}
+        {/* PM Impact */}
         <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">06</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">PM Impact</h2>
+          <p className="text-zinc-500 dark:text-zinc-400 mb-8 text-sm">What this design work actually changed for customers and engineering.</p>
+          <div className="grid md:grid-cols-2 gap-4">
+            {pmImpact.map((item) => (
+              <div key={item.metric} className="flex gap-4 p-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <div className="shrink-0">
+                  <span className="inline-block text-lg font-black text-indigo-600 dark:text-indigo-400">{item.metric}</span>
+                </div>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{item.description}</p>
+              </div>
+            ))}
           </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-3">Cross-Functional Orchestration</h2>
-          <p className="leading-relaxed mb-8 text-zinc-500 dark:text-[#9ca3af]">
-            No single team owned this problem. Resolution required coordinating across six functions —
-            each holding a different piece of the puzzle.
-          </p>
+        </section>
 
-          <div className="grid md:grid-cols-2 gap-3">
-            {[
-              { team: "Provisioning Ops", person: "Vinod", role: "Scaling history, SKU mapping, User Pack provisioning logic, capacity breakup per instance", color: "#22d3ee" },
-              { team: "Engineering", person: "Tarun", role: "Schema-level DB queries, CADW diagnostics, storage breakdowns for both anomaly accounts", color: "#a78bfa" },
-              { team: "Engineering Mgmt", person: "Minu", role: "Customer tier history, User Pack counts, Enterprise-to-Premium downgrade timeline", color: "#f59e0b" },
-              { team: "Product Analytics", person: "Nicole", role: "Provisioned user counts from PA tool for both anomaly accounts", color: "#34d399" },
-              { team: "Legal", person: "Brian", role: "Compliance review requirements, pricing proposal dependency and decision timeline", color: "#f87171" },
-              { team: "Product Lead", person: "Himanshu", role: "Executive updates, final review before Legal and Compliance submission", color: "#fb923c" },
-            ].map((s) => (
-              <div key={s.team} className="flex gap-4 p-4 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
-                <div className="w-1 rounded-full shrink-0" style={{ background: s.color }} />
-                <div>
-                  <div className="flex items-baseline gap-2 mb-1">
-                    <p className="font-semibold text-sm text-zinc-900 dark:text-white">{s.team}</p>
-                    <span className="text-xs font-mono" style={{ color: s.color }}>{s.person}</span>
+        {/* The Mapping Logic */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">How the Mapping Works</h2>
+
+          {/* Step 1: Customer */}
+          <div className="mb-8 p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100">Customer-Level Mapping</h3>
+            </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
+              When a customer purchases NSAW, their NetSuite Account ID becomes the primary key linking all downstream
+              systems. Provisioning creates an ADW instance, an OAC instance, and NSAW Console access — all tied to
+              that one identifier. SSO is configured against the customer's identity provider (IdP).
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-100 dark:border-zinc-800">
+                    <th className="text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide pb-2 pr-4">NetSuite Field</th>
+                    <th className="text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide pb-2 pr-4">NSAW Field</th>
+                    <th className="text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide pb-2">Purpose</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-50 dark:divide-zinc-800">
+                  {[
+                    ["Account ID", "Customer ID", "Primary identifier across all systems"],
+                    ["Company Name", "Instance Name", "Display in Console and OAC"],
+                    ["Account Type", "Tier / Edition", "Feature entitlements (Standard / Premium / Enterprise)"],
+                    ["Subsidiary Structure", "Data Scope", "Multi-subsidiary analytics access"],
+                  ].map(([ns, nsaw, purpose]) => (
+                    <tr key={ns}>
+                      <td className="py-2 pr-4 text-zinc-700 dark:text-zinc-300 font-mono text-xs">{ns}</td>
+                      <td className="py-2 pr-4 text-zinc-700 dark:text-zinc-300 font-mono text-xs">{nsaw}</td>
+                      <td className="py-2 text-zinc-500 dark:text-zinc-400 text-xs">{purpose}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Step 2: Role mapping */}
+          <div className="mb-8 p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100">Role Simplification — 50+ Roles → 3</h3>
+            </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
+              NetSuite has granular roles (Administrator, Accountant, Sales Rep, Controller, and dozens more). Mapping
+              each one to NSAW permissions would be unmanageable. I defined three NSAW roles with clear capability
+              boundaries and a deterministic assignment rule.
+            </p>
+            <div className="space-y-3">
+              {[
+                {
+                  role: "Admin",
+                  color: "border-l-red-500 bg-red-50 dark:bg-red-950/20",
+                  badge: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
+                  caps: "User management · Connector config · All dashboards",
+                  ns: "Administrator · Full Access",
+                },
+                {
+                  role: "Author",
+                  color: "border-l-amber-500 bg-amber-50 dark:bg-amber-950/20",
+                  badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+                  caps: "Create & edit dashboards · Access all data",
+                  ns: "Controller · CFO · Analyst · Report Writer",
+                },
+                {
+                  role: "Viewer",
+                  color: "border-l-blue-500 bg-blue-50 dark:bg-blue-950/20",
+                  badge: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+                  caps: "View assigned dashboards only",
+                  ns: "All other roles (default)",
+                },
+              ].map((r) => (
+                <div key={r.role} className={`p-4 rounded-lg border-l-4 ${r.color}`}>
+                  <div className="flex items-center gap-3 mb-1">
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded ${r.badge}`}>{r.role}</span>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">{r.caps}</span>
                   </div>
-                  <p className="text-xs leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{s.role}</p>
+                  <p className="text-xs text-zinc-400 dark:text-zinc-500">NetSuite source roles: {r.ns}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 3: Center-based prioritization */}
+          <div className="mb-8 p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100">Center-Based Dashboard Prioritization</h3>
+            </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
+              Users belong to a functional Center in NetSuite (Finance, Sales, Operations, etc.). I used this to weight
+              dashboard priority — Finance users see AR Aging first; Sales users see Pipeline first. The priority is
+              calculated, not manually configured per user.
+            </p>
+            <div className="bg-zinc-50 dark:bg-zinc-800 rounded-lg p-4 font-mono text-xs text-zinc-700 dark:text-zinc-300 mb-4">
+              <p className="text-zinc-500 dark:text-zinc-500 mb-2">// Priority formula</p>
+              <p>Final Priority = Admin_Priority + Role_Weight + Center_Weight</p>
+              <p className="text-zinc-500 dark:text-zinc-500 mt-1">// Lower number = shows first</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-100 dark:border-zinc-800">
+                    <th className="text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide pb-2 pr-4">User Center</th>
+                    <th className="text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide pb-2 pr-4">Primary Dashboards</th>
+                    <th className="text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide pb-2">Priority Weight</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-50 dark:divide-zinc-800">
+                  {[
+                    ["Executive", "Executive Summary, KPIs", "5 (highest)"],
+                    ["Finance", "AR Aging, Cash Flow, P&L", "10"],
+                    ["Sales", "Pipeline, Bookings, Revenue", "20"],
+                    ["Operations", "Inventory, Fulfillment", "30"],
+                    ["General", "All dashboards equal", "50"],
+                  ].map(([center, dashboards, weight]) => (
+                    <tr key={center}>
+                      <td className="py-2 pr-4 text-zinc-700 dark:text-zinc-300 text-xs font-medium">{center}</td>
+                      <td className="py-2 pr-4 text-zinc-500 dark:text-zinc-400 text-xs">{dashboards}</td>
+                      <td className="py-2 text-zinc-500 dark:text-zinc-400 text-xs">{weight}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Step 4: SSO flow */}
+          <div className="p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100">SSO Identity Flow (MVP Scope)</h3>
+            </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-5">
+              For MVP, I scoped user identity to SSO-enabled customers only. SSO provides a reliable, verified
+              identity token — eliminating password management, credential storage, and manual provisioning for
+              each login. The token carries the attributes needed to look up or create the NSAW user record.
+            </p>
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              {[
+                { label: "NetSuite UI", sub: "User clicks NSAW link" },
+                { label: "Customer IdP", sub: "Validates credentials" },
+                { label: "IDCS (Oracle)", sub: "Issues SAML token" },
+                { label: "NSAW Console", sub: "Validates & creates session" },
+                { label: "OAC", sub: "User lands on dashboard" },
+              ].map((step, i) => (
+                <div key={step.label} className="flex items-center gap-2">
+                  <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900 rounded-lg text-center min-w-[80px]">
+                    <p className="font-semibold text-indigo-700 dark:text-indigo-300 text-[11px]">{step.label}</p>
+                    <p className="text-[10px] text-zinc-500 mt-0.5 leading-tight">{step.sub}</p>
+                  </div>
+                  {i < 4 && <span className="text-zinc-300 dark:text-zinc-600 font-bold">→</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Challenges */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">Challenges I Faced & How I Solved Them</h2>
+          <p className="text-zinc-500 dark:text-zinc-400 mb-8 text-sm max-w-3xl">
+            The mapping logic sounds straightforward on paper. The hard part was anticipating the gaps, edge cases,
+            and failure modes that engineering teams would encounter without a spec.
+          </p>
+          <div className="space-y-5">
+            {challenges.map((c) => (
+              <div key={c.challenge} className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+                <div className="p-6">
+                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-4">{c.challenge}</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">The Problem</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{c.detail}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide mb-2">How I Solved It</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{c.howISolved}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── SECTION 07: OUTCOMES ── */}
+        {/* Edge Cases */}
         <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">07</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">Outcomes & Impact</h2>
-
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Edge Cases Specified</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {[
               {
-                icon: "💰", title: "Revenue Recovery",
-                desc: "~$1M in identifiable excess capacity across anomaly accounts, enabling the Capacity Pack pricing decision for Finance and Legal.",
-                highlight: "~$1M", hcolor: "#10b981",
+                title: "User in NetSuite, not in NSAW",
+                scenario: "New employee tries to access NSAW",
+                logic: "If SSO auto-provisioning on → create Viewer. If off → show 'Contact your NSAW Admin'.",
               },
               {
-                icon: "📊", title: "Complete Audit Trail",
-                desc: "All 100+ customers categorized with documented root causes. Legal received actionable data to proceed with the pricing proposal — decision unblocked.",
-                highlight: "100+ resolved", hcolor: "#22d3ee",
+                title: "User removed from NetSuite",
+                scenario: "Employee offboarding",
+                logic: "SSO fails → user blocked from NSAW. Manual cleanup in User Management required (auto-cleanup as roadmap item).",
               },
               {
-                icon: "🔧", title: "Process Fix",
-                desc: "Established requirement for Provisioning Ops to CC Product team on all future scale-up Jira SD tickets. Simple, lightweight, prevents recurrence.",
-                highlight: "0 bureaucracy added", hcolor: "#a78bfa",
+                title: "NetSuite role change",
+                scenario: "Sales Rep promoted to Sales Manager",
+                logic: "NSAW role doesn't auto-change (intentional). Admin manually adjusts if elevated access is needed.",
               },
               {
-                icon: "🧩", title: "Systemic Insight",
-                desc: "Exposed the gap between commercial entitlement tiers and technical provisioning logic — User Pack auto-scaling was by design but commercially undocumented.",
-                highlight: "Root cause documented", hcolor: "#f59e0b",
+                title: "Multi-subsidiary user",
+                scenario: "User has US + UK subsidiary access in NetSuite",
+                logic: "User sees dashboards for all subsidiaries. Data scoped by subsidiary; consolidated view available.",
               },
-            ].map((o) => (
-              <div key={o.title} className="p-5 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
-                <div className="text-2xl mb-3">{o.icon}</div>
-                <p className="font-bold text-zinc-900 dark:text-white mb-1">{o.title}</p>
-                <p className="text-xs leading-relaxed mb-3 text-zinc-500 dark:text-[#9ca3af]">{o.desc}</p>
-                <p className="text-sm font-bold" style={{ color: o.hcolor }}>{o.highlight}</p>
+              {
+                title: "Dashboard URL breaks",
+                scenario: "Admin renames a workbook in OAC",
+                logic: "Old URL becomes invalid. Admin must update in User Management. Future: broken URL detection and alert.",
+              },
+              {
+                title: "Re-provisioned instance",
+                scenario: "Customer disables and re-enables NSAW",
+                logic: "New instance doesn't inherit admin mappings. Admin must reconfigure users. Documented as known limitation; soft-disable proposed for Phase 2.",
+              },
+            ].map((ec) => (
+              <div key={ec.title} className="p-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1 text-sm">{ec.title}</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-3 italic">{ec.scenario}</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{ec.logic}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── SECTION 08: PM CRAFT ── */}
+        {/* Key Decisions */}
         <section className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">08</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-[#1f2937]" />
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Key PM Decisions</h2>
+          <div className="space-y-4">
+            {keyDecisions.map((d) => (
+              <div key={d.decision} className="p-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3">{d.decision}</p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1.5">Why</p>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{d.why}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-1.5">Impact</p>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{d.impact}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">PM Judgment on Display</h2>
+        </section>
 
+        {/* PM Craft */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">PM Judgment on Display</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { title: "Forensic analysis", desc: "Traced storage anomalies across fleet reports, provisioning systems, DB schemas, and commercial entitlements — across 4 weeks and 6 teams — when no standard path led anywhere." },
-              { title: "Stakeholder management", desc: "Coordinated 6 teams across Ops, Engineering, Legal, Finance, and Product — each holding a different piece of the puzzle — without formal authority over any of them." },
-              { title: "Systems thinking", desc: "Connected the User Pack provisioning logic to commercial tier design, exposing a systemic gap that no single team could see from their vantage point." },
-              { title: "Business acumen", desc: "Framed technical findings in business terms — ~$1M recovery, grandfathering vs. charging, compliance risk, Capacity Pack pricing unblock — for a Legal and Finance audience." },
-              { title: "Process design", desc: "Designed a lightweight fix (CC on Jira SD tickets) that prevents the gap from recurring without adding overhead or bureaucracy to existing workflows." },
-              { title: "Executive communication", desc: "Translated a month-long forensic investigation into crisp executive updates with clear asks, status on each of 100+ accounts, and a decisive recommendation." },
+              {
+                title: "Systems architecture thinking",
+                desc: "Mapped how three independent systems with three different identity models needed to behave as one — from provisioning through authentication to dashboard delivery.",
+              },
+              {
+                title: "Simplification under constraints",
+                desc: "Collapsed 50+ NetSuite roles into 3 NSAW roles without losing governance. The constraint was admin usability — not feature completeness.",
+              },
+              {
+                title: "Edge case ownership",
+                desc: "Specified 7 failure scenarios with explicit handling logic before engineering started building. This prevented ad-hoc decisions during implementation.",
+              },
+              {
+                title: "MVP scoping discipline",
+                desc: "SSO-only for MVP was a deliberate constraint. It reduced scope, eliminated credential management complexity, and delivered a more reliable product faster.",
+              },
+              {
+                title: "Dependency mapping",
+                desc: "The mapping logic here was a prerequisite for the Smart Landing Page (A4). Identifying and sequencing that dependency prevented a downstream rework.",
+              },
+              {
+                title: "Documentation as product",
+                desc: "The mapping spec became the source of truth for engineering, support, and onboarding. Clear specs reduce interpretation gaps and support escalations.",
+              },
             ].map((item) => (
-              <div key={item.title} className="flex gap-3 p-5 rounded-xl border bg-zinc-50 dark:bg-[#111827] border-zinc-200 dark:border-[#1f2937]">
-                <div className="w-1 rounded-full shrink-0 mt-1 bg-cyan-400 dark:bg-[#22d3ee]" style={{ minHeight: "100%" }} />
-                <div>
-                  <p className="font-semibold text-zinc-900 dark:text-white mb-1 text-sm">{item.title}</p>
-                  <p className="text-xs leading-relaxed text-zinc-500 dark:text-[#9ca3af]">{item.desc}</p>
-                </div>
+              <div key={item.title} className="p-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{item.title}</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{item.desc}</p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Tags */}
+        <section className="mb-16">
+          <div className="flex flex-wrap gap-2">
+            {["Identity Management", "SSO", "User Mapping", "Data Architecture", "Enterprise SaaS", "Multi-tenant", "Role-Based Access", "NetSuite", "Oracle", "Systems Thinking"].map((tag) => (
+              <span key={tag} className="text-xs font-medium text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full">
+                {tag}
+              </span>
             ))}
           </div>
         </section>
 
         {/* Footer nav */}
-        <div className="pt-8 flex justify-between items-center border-t border-zinc-200 dark:border-[#1f2937]">
-          <Link href="/" className="text-sm text-zinc-400 dark:text-[#6b7280] hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">
+        <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+          <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
             ← All case studies
           </Link>
-          <span className="text-xs font-mono text-zinc-300 dark:text-[#374151]">A3 · Excess Capacity Investigation</span>
+          <span className="text-xs text-zinc-400 font-mono">A5 · Customer & User Mapping Logic</span>
         </div>
       </main>
     </div>

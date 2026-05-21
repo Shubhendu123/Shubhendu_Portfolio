@@ -126,7 +126,7 @@ function SmartLandingPageCaseStudy() {
           <Link href="/" className="font-semibold text-zinc-600 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors text-sm">
             ← SV
           </Link>
-          <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500">A6 / Case Study</span>
+          <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500">A4 / Case Study</span>
         </div>
       </header>
 
@@ -135,7 +135,7 @@ function SmartLandingPageCaseStudy() {
         {/* ── HERO ── */}
         <div className="mb-20">
           <div className="flex items-center gap-3 mb-5">
-            <span className="text-xs font-mono px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">A6</span>
+            <span className="text-xs font-mono px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">A4</span>
             <span className="text-xs font-semibold text-violet-600 dark:text-violet-400 uppercase tracking-widest">Constraint-Driven Delivery</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 text-zinc-900 dark:text-white">
@@ -471,7 +471,7 @@ function SmartLandingPageCaseStudy() {
           <Link href="/" className="text-sm text-zinc-400 dark:text-zinc-500 hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
             ← All case studies
           </Link>
-          <span className="text-xs font-mono text-zinc-300 dark:text-zinc-700">A6 · Smart Landing Page MVP</span>
+          <span className="text-xs font-mono text-zinc-300 dark:text-zinc-700">A4 · Smart Landing Page MVP</span>
         </div>
       </main>
     </div>
