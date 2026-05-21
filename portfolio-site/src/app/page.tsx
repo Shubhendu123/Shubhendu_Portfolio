@@ -475,7 +475,7 @@ export default function Home() {
             Let&apos;s connect.
           </h2>
           <p className="text-[#E8F3F3] text-base mb-10 max-w-md mx-auto">
-            Open to Principal / Senior AI PM roles, collaborations, or trading notes on enterprise AI.
+            Open to collaborations or trading notes on enterprise AI.
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
             <a
