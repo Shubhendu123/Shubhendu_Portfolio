@@ -511,7 +511,7 @@ export default function Home() {
             <div className="w-5 h-5 rounded-full bg-[#0F6B6B] flex items-center justify-center shrink-0">
               <span className="text-white font-bold text-[9px]">SV</span>
             </div>
-            <p className="text-sm text-white/40">Built with Next.js &amp; Claude Code</p>
+            <p className="text-sm text-white/40">© {new Date().getFullYear()} Shubhendu Vimal</p>
           </div>
           <div className="flex gap-6">
             <a
