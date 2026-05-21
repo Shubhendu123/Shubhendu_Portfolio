@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CaseStudyGate from "@/components/CaseStudyGate";
 
 const journeys = [
   {
@@ -330,7 +331,15 @@ const borderAccent = (p: string) => {
   return "border-l-blue-400";
 };
 
-export default function NSAWSimplificationCaseStudy() {
+export default function NSAWSimplificationCaseStudyPage() {
+  return (
+    <CaseStudyGate>
+      <NSAWSimplificationCaseStudy />
+    </CaseStudyGate>
+  );
+}
+
+function NSAWSimplificationCaseStudy() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Header */}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CaseStudyGate from "@/components/CaseStudyGate";
 
 /* ── SVG: Instance Breakdown Bar Chart ── */
 function InstanceBreakdownChart() {
@@ -107,7 +108,15 @@ function OwnershipDonut() {
   );
 }
 
-export default function TestDriveCleanupCaseStudy() {
+export default function TestDriveCleanupCaseStudyPage() {
+  return (
+    <CaseStudyGate>
+      <TestDriveCleanupCaseStudy />
+    </CaseStudyGate>
+  );
+}
+
+function TestDriveCleanupCaseStudy() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
 

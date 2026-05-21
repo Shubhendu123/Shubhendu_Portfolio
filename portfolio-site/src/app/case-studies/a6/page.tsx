@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CaseStudyGate from "@/components/CaseStudyGate";
 
 /* ── Three-box architecture flow diagram ── */
 function ArchitectureFlow() {
@@ -107,7 +108,15 @@ function BeforeAfter() {
 }
 
 /* ── Main Page ── */
-export default function SmartLandingPageCaseStudy() {
+export default function SmartLandingPageCaseStudyPage() {
+  return (
+    <CaseStudyGate>
+      <SmartLandingPageCaseStudy />
+    </CaseStudyGate>
+  );
+}
+
+function SmartLandingPageCaseStudy() {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
 

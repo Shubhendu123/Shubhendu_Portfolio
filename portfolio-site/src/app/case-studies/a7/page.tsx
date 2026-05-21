@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CaseStudyGate from "@/components/CaseStudyGate";
 
 const keyDecisions = [
   {
@@ -70,7 +71,15 @@ const pmImpact = [
   },
 ];
 
-export default function MappingLogicCaseStudy() {
+export default function MappingLogicCaseStudyPage() {
+  return (
+    <CaseStudyGate>
+      <MappingLogicCaseStudy />
+    </CaseStudyGate>
+  );
+}
+
+function MappingLogicCaseStudy() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Header */}

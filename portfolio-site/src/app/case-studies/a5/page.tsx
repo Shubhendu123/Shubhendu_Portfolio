@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import CaseStudyGate from "@/components/CaseStudyGate";
 
 /* ─────────────────────────────────────────
    SVG: Allocated vs Actual Used bar chart
@@ -156,7 +157,15 @@ const anomalyTabs = [
   },
 ];
 
-export default function ExcessCapacityCaseStudy() {
+export default function ExcessCapacityCaseStudyPage() {
+  return (
+    <CaseStudyGate>
+      <ExcessCapacityCaseStudy />
+    </CaseStudyGate>
+  );
+}
+
+function ExcessCapacityCaseStudy() {
   const [activeTab, setActiveTab] = useState("ghm");
   const tab = anomalyTabs.find((t) => t.id === activeTab)!;
 
