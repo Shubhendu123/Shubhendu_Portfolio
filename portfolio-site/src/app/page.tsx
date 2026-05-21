@@ -49,7 +49,7 @@ export default function Home() {
             <div className="flex-1 min-w-0">
               {/* Eyebrow */}
               <p className="text-xs font-semibold text-[#0F6B6B] uppercase tracking-[0.2em] mb-5">
-                AI-Native Principal PM · Enterprise SaaS
+                AI-Native Principal PM · Enterprise <span className="normal-case">SaaS</span>
               </p>
 
               {/* Headline */}
