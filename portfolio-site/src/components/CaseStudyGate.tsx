@@ -6,16 +6,26 @@ import { useEffect, useState } from "react";
 const PASSWORD =
   process.env.NEXT_PUBLIC_CASE_STUDY_PASSWORD ?? "shubhendu-2026";
 
-const STORAGE_KEY = "case-study-unlocked";
+// Owner bypass: visit ANY page on the site with `?owner=<OWNER_KEY>` once on
+// your laptop/phone, and that browser is permanently unlocked (localStorage).
+// Rotate this if you ever shared it by accident.
+const OWNER_KEY =
+  process.env.NEXT_PUBLIC_OWNER_KEY ?? "shubhendu-owner-2026-pv9";
 
-const REQUEST_MAILTO =
-  "mailto:shubhendus@gmail.com" +
-  "?subject=" +
+const SESSION_UNLOCK_KEY = "case-study-unlocked";
+const OWNER_FLAG_KEY = "portfolio-owner";
+
+const REQUEST_URL =
+  "https://mail.google.com/mail/?view=cm&fs=1" +
+  "&to=" +
+  encodeURIComponent("shubhendus@gmail.com") +
+  "&su=" +
   encodeURIComponent("Case study access request") +
   "&body=" +
   encodeURIComponent(
-    "Hi Shubhendu,\n\nI'd like access to your Track A case studies. " +
-      "Could you share the password?\n\nThanks!"
+    "Hi Shubhendu,\n\n" +
+      "I'd like access to your Track A case studies. Could you share the password?\n\n" +
+      "Thanks!"
   );
 
 export default function CaseStudyGate({ children }: { children: React.ReactNode }) {
@@ -25,17 +35,36 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+    // Owner bypass — permanent on this browser
+    if (localStorage.getItem(OWNER_FLAG_KEY) === "1") {
       setUnlocked(true);
       setReady(true);
       return;
     }
+
     const params = new URLSearchParams(window.location.search);
-    const fromUrl = params.get("p");
-    if (fromUrl && fromUrl === PASSWORD) {
-      sessionStorage.setItem(STORAGE_KEY, "1");
+
+    // Owner enrolment: `?owner=<OWNER_KEY>` → set localStorage permanently
+    if (params.get("owner") === OWNER_KEY) {
+      localStorage.setItem(OWNER_FLAG_KEY, "1");
+      setUnlocked(true);
+      setReady(true);
+      return;
+    }
+
+    // Per-session unlock (visitor already entered the password this session)
+    if (sessionStorage.getItem(SESSION_UNLOCK_KEY) === "1") {
+      setUnlocked(true);
+      setReady(true);
+      return;
+    }
+
+    // Shareable pre-unlocked link: `?p=<PASSWORD>` → unlock for this session
+    if (params.get("p") === PASSWORD) {
+      sessionStorage.setItem(SESSION_UNLOCK_KEY, "1");
       setUnlocked(true);
     }
+
     setReady(true);
   }, []);
 
@@ -45,7 +74,7 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input === PASSWORD) {
-      sessionStorage.setItem(STORAGE_KEY, "1");
+      sessionStorage.setItem(SESSION_UNLOCK_KEY, "1");
       setUnlocked(true);
     } else {
       setError(true);
@@ -91,7 +120,9 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
         <p className="text-xs text-[#5C5C5C] mt-5 text-center">
           Don&apos;t have a password?{" "}
           <a
-            href={REQUEST_MAILTO}
+            href={REQUEST_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-[#0F6B6B] font-semibold hover:underline"
           >
             Request access
