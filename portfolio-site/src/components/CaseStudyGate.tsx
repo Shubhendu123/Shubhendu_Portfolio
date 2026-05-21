@@ -1,19 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
-
-// Change this value (or set NEXT_PUBLIC_CASE_STUDY_PASSWORD in Vercel) to rotate the password.
-const PASSWORD =
-  process.env.NEXT_PUBLIC_CASE_STUDY_PASSWORD ?? "shubhendu-2026";
-
-// Owner bypass: visit ANY page on the site with `?owner=<OWNER_KEY>` once on
-// your laptop/phone, and that browser is permanently unlocked (localStorage).
-// Rotate this if you ever shared it by accident.
-const OWNER_KEY =
-  process.env.NEXT_PUBLIC_OWNER_KEY ?? "shubhendu-owner-2026-pv9";
-
-const SESSION_UNLOCK_KEY = "case-study-unlocked";
-const OWNER_FLAG_KEY = "portfolio-owner";
+import {
+  PASSWORD,
+  OWNER_KEY,
+  OWNER_FLAG_KEY,
+  SESSION_UNLOCK_KEY,
+} from "@/lib/case-study-access";
 
 const REQUEST_URL =
   "https://mail.google.com/mail/?view=cm&fs=1" +
@@ -35,7 +29,6 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    // Owner bypass — permanent on this browser
     if (localStorage.getItem(OWNER_FLAG_KEY) === "1") {
       setUnlocked(true);
       setReady(true);
@@ -44,7 +37,6 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
 
     const params = new URLSearchParams(window.location.search);
 
-    // Owner enrolment: `?owner=<OWNER_KEY>` → set localStorage permanently
     if (params.get("owner") === OWNER_KEY) {
       localStorage.setItem(OWNER_FLAG_KEY, "1");
       setUnlocked(true);
@@ -52,14 +44,12 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
       return;
     }
 
-    // Per-session unlock (visitor already entered the password this session)
     if (sessionStorage.getItem(SESSION_UNLOCK_KEY) === "1") {
       setUnlocked(true);
       setReady(true);
       return;
     }
 
-    // Shareable pre-unlocked link: `?p=<PASSWORD>` → unlock for this session
     if (params.get("p") === PASSWORD) {
       sessionStorage.setItem(SESSION_UNLOCK_KEY, "1");
       setUnlocked(true);
@@ -73,6 +63,12 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Owner key in the password field → permanent unlock on this browser
+    if (input === OWNER_KEY) {
+      localStorage.setItem(OWNER_FLAG_KEY, "1");
+      setUnlocked(true);
+      return;
+    }
     if (input === PASSWORD) {
       sessionStorage.setItem(SESSION_UNLOCK_KEY, "1");
       setUnlocked(true);
@@ -128,6 +124,14 @@ export default function CaseStudyGate({ children }: { children: React.ReactNode 
             Request access
           </a>
         </p>
+        <div className="mt-4 pt-4 border-t border-[#0F6B6B]/10 text-center">
+          <Link
+            href="/"
+            className="text-xs text-[#5C5C5C] hover:text-[#0F6B6B] hover:underline"
+          >
+            ← Back to portfolio
+          </Link>
+        </div>
       </div>
     </div>
   );
