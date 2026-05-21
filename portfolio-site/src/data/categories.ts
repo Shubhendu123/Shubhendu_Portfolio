@@ -7,6 +7,17 @@ export type AICategory = {
 
 export const aiCategories: AICategory[] = [
   {
+    label: "Agentic",
+    sublabel: "Multi-agent · RAG · Trust Console",
+    proof:
+      "Counsel-AI — agentic RAG legal knowledge platform with a Trust Console for grounded, citation-backed answers. Built end-to-end: Next.js, API, MCP-compatible Connector SDK.",
+    link: {
+      label: "View on GitHub",
+      href: "https://github.com/Shubhendu123/Counsel-AI",
+      external: true,
+    },
+  },
+  {
     label: "GenAI",
     sublabel: "Conversational analytics",
     proof:
@@ -26,16 +37,5 @@ export const aiCategories: AICategory[] = [
     proof:
       "AIDE at Fractal Analytics — NLP root-cause analysis on chat, feedback, and survey data. Lifted product adoption by 25% through voice-of-customer insight loops.",
     link: { label: "Read case", href: "/case-studies/a1", external: false },
-  },
-  {
-    label: "Agentic",
-    sublabel: "Multi-agent · RAG · Trust Console",
-    proof:
-      "Counsel-AI — agentic RAG legal knowledge platform with a Trust Console for grounded, citation-backed answers. Built end-to-end: Next.js, API, MCP-compatible Connector SDK.",
-    link: {
-      label: "View on GitHub",
-      href: "https://github.com/Shubhendu123/Counsel-AI",
-      external: true,
-    },
   },
 ];

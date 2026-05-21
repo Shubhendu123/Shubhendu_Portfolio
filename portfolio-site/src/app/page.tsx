@@ -362,18 +362,15 @@ export default function Home() {
       {/* ── Testimonials ─────────────────────────────────────────── */}
       <section id="testimonials" className="py-20 px-6 bg-[#FAF7F2] border-t border-[#0F6B6B]/8">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-10">
+          <div className="mb-10 text-center">
             <h2
               className="font-serif text-3xl font-bold text-[#1A1A1A] tracking-tight"
             >
-              What people say.
+              Kind Words from Teammates & Partners
             </h2>
-            <p className="text-[#5C5C5C] text-sm mt-2">
-              From managers, peers, and cross-functional partners at Oracle NetSuite and Fractal Analytics.
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto">
             {testimonials.map((t, i) => (
               <div
                 key={i}
@@ -386,16 +383,16 @@ export default function Home() {
                 <div>
                   <p className="text-sm font-semibold text-[#1A1A1A]">{t.name}</p>
                   <p className="text-xs text-[#9A9A9A]">
-                    {t.title} · {t.company} · {t.date}
+                    {[t.title, t.company, t.date].filter(Boolean).join(" · ")}
                   </p>
                   {t.linkedinUrl && (
                     <a
                       href={t.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-[#0F6B6B] hover:underline mt-1 inline-block"
+                      className="text-xs text-[#0F6B6B] hover:underline mt-2 inline-block"
                     >
-                      View on LinkedIn →
+                      View on LinkedIn
                     </a>
                   )}
                 </div>
