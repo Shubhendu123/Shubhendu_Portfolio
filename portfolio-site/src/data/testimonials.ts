@@ -13,6 +13,23 @@ const recommendationsUrl =
 export const testimonials: Testimonial[] = [
   {
     quote:
+      "I had the opportunity to work with Shubhendu on AI and platform-focused initiatives and was consistently impressed by his ability to combine product leadership with a strong builder mindset. What stood out most was his ability to rapidly translate ideas into tangible prototypes and structured product directions...",
+    name: "Manjunath Subramanian",
+    title:
+      "Product Management | Data and Analytics | Executive PhD Candidate - IIM Trichy",
+    date: "May 2026",
+    linkedinUrl: recommendationsUrl,
+  },
+  {
+    quote:
+      "I had the pleasure of working with Shubhendu for over a year and a half on several features related to a complex data warehouse solution. As a technical writer collaborating closely with him on product documentation, I was able to observe firsthand his product management approach and execution style...",
+    name: "Andreu Sánchez Massana",
+    title: "Technical Writer",
+    date: "May 2026",
+    linkedinUrl: recommendationsUrl,
+  },
+  {
+    quote:
       "I had the pleasure of working alongside Shubhendu on a web optimization project, where he excelled as a Senior Product Manager. He is not only strategic in defining product direction but also collaborative and humble, fostering a productive and positive work environment...",
     name: "Maninder Singh",
     title:
