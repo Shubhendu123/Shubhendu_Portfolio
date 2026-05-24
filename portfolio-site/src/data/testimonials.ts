@@ -15,8 +15,8 @@ export const testimonials: Testimonial[] = [
     quote:
       "I had the opportunity to work with Shubhendu on AI and platform-focused initiatives and was consistently impressed by his ability to combine product leadership with a strong builder mindset. What stood out most was his ability to rapidly translate ideas into tangible prototypes and structured product directions...",
     name: "Manjunath Subramanian",
-    title:
-      "Product Management | Data and Analytics | Executive PhD Candidate - IIM Trichy",
+    title: "Chief Expert Product Management for Data",
+    company: "SAP",
     date: "May 2026",
     linkedinUrl: recommendationsUrl,
   },
