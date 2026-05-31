@@ -286,7 +286,7 @@ export default function Home() {
               return (
                 <div
                   key={project.id}
-                  className="bg-[#FAF7F2] rounded-xl p-7 flex flex-col border border-[#0F6B6B]/10 hover:border-[#0F6B6B]/25 hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
+                  className="relative bg-[#FAF7F2] rounded-xl p-7 flex flex-col border border-[#0F6B6B]/10 hover:border-[#0F6B6B]/25 hover:-translate-y-0.5 transition-all duration-200 shadow-sm cursor-pointer"
                 >
                   {/* Header row */}
                   <div className="flex items-start justify-between mb-4">
@@ -332,7 +332,8 @@ export default function Home() {
                       href={primaryHref}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm font-semibold text-[#0F6B6B] hover:underline"
+                      aria-label={`Open ${project.title}`}
+                      className="text-sm font-semibold text-[#0F6B6B] hover:underline before:absolute before:inset-0 before:content-['']"
                     >
                       {hasLive ? "Try it →" : "View on GitHub →"}
                     </a>
@@ -346,7 +347,7 @@ export default function Home() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-[#9A9A9A] hover:text-[#0F6B6B] transition-colors"
+                        className="relative z-10 text-xs text-[#9A9A9A] hover:text-[#0F6B6B] transition-colors"
                       >
                         GitHub →
                       </a>
