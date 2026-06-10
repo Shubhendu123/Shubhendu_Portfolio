@@ -31,7 +31,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "Shubhendu delivered impactful functionality and was able to add value very quickly. One of his strongest qualities is the level of detail and thought he brings to understanding the problem before driving toward a solution. He has a strong grasp of roadmap management and prioritization, and he balances customer needs, business goals, and execution realities effectively. He is collaborative, dependable, and thoughtful in his approach — any team would benefit from having him onboard.",
+      "I had the opportunity to work closely with Shubhendu on the NSAW product, and it was a great experience collaborating with him. He delivered impactful functionality and was able to add value very quickly. One of his strongest qualities is the level of detail and thought he brings to understanding the problem before driving toward a solution. He has a strong grasp of roadmap management and prioritization, and he balances customer needs, business goals, and execution realities effectively. He is collaborative, dependable, and thoughtful in his approach — any team would benefit from having him onboard.",
     name: "Sandhya Viswanath",
     title: "Senior Product Manager",
     company: "Oracle NetSuite",
