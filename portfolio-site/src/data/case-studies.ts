@@ -6,6 +6,7 @@ export type CaseStudy = {
   description: string;
   status: "live" | "coming-soon" | "hidden";
   href?: string;
+  tag?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -53,5 +54,15 @@ export const caseStudies: CaseStudy[] = [
     description: "Designed cross-system identity flow from NetSuite through NSAW to OAC. Role simplification and SSO-only MVP scope.",
     status: "live",
     href: "/case-studies/a5",
+  },
+  {
+    id: "A6",
+    metricLabel: "5 → 2 HUMAN STEPS",
+    metricSub: "Product Teardown · SAP Concur · 92M users",
+    title: "Concur Expense — Product Teardown & Vision",
+    description: "Tore down Concur Expense to find why $58 processing costs persist despite digitization. Built a 4-phase roadmap to trusted autonomy — and shipped a live prototype to prove it.",
+    status: "live",
+    href: "/case-studies/a6",
+    tag: "Product Teardown",
   },
 ];

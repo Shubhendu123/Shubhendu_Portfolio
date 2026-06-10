@@ -212,9 +212,16 @@ export default function Home() {
                 >
                   {/* ID badge */}
                   <div className="flex items-start justify-between mb-4">
-                    <span className="inline-block text-[10px] font-bold text-[#0F6B6B] bg-[#E8F3F3] border border-[#0F6B6B]/15 px-2 py-0.5 rounded font-mono">
-                      {study.id}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block text-[10px] font-bold text-[#0F6B6B] bg-[#E8F3F3] border border-[#0F6B6B]/15 px-2 py-0.5 rounded font-mono">
+                        {study.id}
+                      </span>
+                      {study.tag && (
+                        <span className="inline-block text-[10px] font-semibold text-[#7C5C1E] bg-[#FDF3DC] border border-[#C9A961]/30 px-2 py-0.5 rounded">
+                          {study.tag}
+                        </span>
+                      )}
+                    </div>
                     {study.href && (
                       <span className="text-[11px] text-[#0F6B6B] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                         Read case →
