@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import OwnerEnrolment from "@/components/OwnerEnrolment";
+import { Analytics } from "@vercel/analytics/next";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -56,6 +57,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#FAF7F2] text-[#1A1A1A] antialiased">
         <OwnerEnrolment />
         {children}
+        <Analytics />
       </body>
     </html>
   );

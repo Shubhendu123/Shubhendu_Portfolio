@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 
 const phases = [
   {
@@ -125,6 +127,7 @@ export default function ConcurTeardownPage() {
               href="https://concur-expense.vercel.app/dashboard"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track("concur_prototype_click", { location: "hero" })}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 rounded-lg font-semibold text-sm hover:border-zinc-500 dark:hover:border-zinc-400 transition-colors"
             >
               ▶ Open Live Prototype
@@ -400,6 +403,7 @@ export default function ConcurTeardownPage() {
               href="https://concur-expense.vercel.app/dashboard"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track("concur_prototype_click", { location: "prototype_section" })}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-zinc-900 rounded-lg font-semibold text-sm hover:bg-zinc-100 transition-colors"
             >
               ▶ Open Live Prototype →
