@@ -1,7 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Color palette ───────────────────────────────────────── */
+  /* ── Editorial palette ───────────────────────────────────── */
+  --color-parchment:       #F2EDE3;
+  --color-parchment-deep:  #EAE3D4;
+  --color-ink:             #171310;
+  --color-ink-soft:        #2A241E;
+  --color-accent:          #C2440C;
+  --color-accent-deep:     #A33908;
+  --color-muted:           #565047;
+  --color-muted-light:     #8C8478;
+
+  /* Legacy palette — still used by case-study pages */
   --color-cream:        #FAF7F2;
   --color-cream-dark:   #F0EAE0;
   --color-teal:         #0F6B6B;
@@ -11,8 +21,6 @@
   --color-gold:         #C9A961;
   --color-gold-light:   #FBF5E7;
   --color-charcoal:     #1A1A1A;
-  --color-muted:        #5C5C5C;
-  --color-muted-light:  #9A9A9A;
 
   /* ── Typography ──────────────────────────────────────────── */
   --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
@@ -39,7 +47,122 @@ html {
   font-family: var(--font-serif);
 }
 
-/* ── Card border accent ──────────────────────────────────────── */
+/* ── Card border accent (legacy, case-study pages) ───────────── */
 .card-border {
   border: 1px solid rgba(15, 107, 107, 0.12);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Editorial home page
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Intro reveal ────────────────────────────────────────────── */
+.intro-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #171310;
+  color: #F2EDE3;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+html[data-intro] .intro-overlay {
+  display: flex;
+}
+.intro-overlay.intro-exit {
+  transform: translateY(-100%);
+}
+
+/* ── Scroll reveal (JS-gated so content stays visible without JS) */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Skills ticker ───────────────────────────────────────────── */
+.ticker {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 48s linear infinite;
+}
+.ticker:hover .ticker-track,
+.ticker:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+.ticker-track ul {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.ticker-term {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s ease;
+  transform-origin: center bottom;
+}
+.ticker-term:hover,
+.ticker-term:focus-visible {
+  transform: scale(1.55);
+  color: #C2440C;
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Editorial link underline ────────────────────────────────── */
+.link-rule {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-rule:hover {
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .intro-overlay {
+    display: none !important;
+  }
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .ticker {
+    overflow-x: auto;
+  }
+  .ticker-track {
+    animation: none;
+  }
+  .ticker-term {
+    transition: none;
+  }
+  .ticker-term:hover,
+  .ticker-term:focus-visible {
+    transform: none;
+  }
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -16,37 +15,42 @@ export default function NavBar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#0F6B6B]/10 shadow-sm"
-          : "bg-transparent"
+          ? "bg-parchment/95 backdrop-blur-md border-b border-ink/15"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center gap-4">
         {/* Logo */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full bg-[#0F6B6B] flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-[10px] tracking-tight">SV</span>
+        <a href="#hero" className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 rounded-full bg-ink flex items-center justify-center shrink-0">
+            <span className="text-parchment font-bold text-[10px] tracking-tight">
+              SV
+            </span>
           </div>
-          <span
-            className="font-bold text-[#1A1A1A] text-sm tracking-tight"
-            style={{ fontFamily: "var(--font-playfair)" }}
-          >
+          <span className="font-serif italic text-ink text-base tracking-tight hidden sm:inline">
             Shubhendu Vimal
           </span>
-        </div>
+        </a>
 
         {/* Nav links */}
-        <nav className="flex items-center gap-7">
+        <nav className="flex items-center gap-x-3.5 gap-y-1 md:gap-7 flex-wrap justify-end">
           {[
             { label: "Work", href: "#case-studies" },
             { label: "AI Projects", href: "#projects" },
             { label: "About", href: "#about" },
             { label: "Connect", href: "#connect" },
-          ].map((item) => (
+          ].map((item, i) => (
             <a
               key={item.label}
               href={item.href}
-              className="text-xs font-medium text-[#5C5C5C] hover:text-[#0F6B6B] transition-colors tracking-widest uppercase"
+              className="group text-[11px] font-medium text-ink/70 hover:text-accent transition-colors tracking-[0.18em] uppercase whitespace-nowrap"
             >
+              <span
+                className="font-mono text-[9px] text-accent mr-1 hidden md:inline"
+                aria-hidden="true"
+              >
+                0{i + 1}
+              </span>
               {item.label}
             </a>
           ))}
@@ -54,7 +58,7 @@ export default function NavBar() {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold text-[#0F6B6B] border border-[#0F6B6B] px-3 py-1.5 rounded-full hover:bg-[#0F6B6B] hover:text-white transition-all duration-200"
+            className="text-[11px] font-semibold tracking-[0.18em] uppercase text-ink border border-ink/40 px-3.5 py-1.5 hover:bg-ink hover:text-parchment transition-all duration-200"
           >
             Resume
           </a>

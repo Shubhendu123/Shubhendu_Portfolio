@@ -1,80 +1,135 @@
 import Image from "next/image";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
+import IntroReveal from "@/components/IntroReveal";
+import Reveal from "@/components/Reveal";
+import Contour from "@/components/Contour";
+import Ticker from "@/components/Ticker";
 import { caseStudies } from "@/data/case-studies";
 import { projects } from "@/data/projects";
 import { aiCategories } from "@/data/categories";
 import { testimonials } from "@/data/testimonials";
 import { heroStats } from "@/data/hero-stats";
 
+function SectionHeader({
+  index,
+  eyebrow,
+  heading,
+  sub,
+}: {
+  index: string;
+  eyebrow: string;
+  heading: string;
+  sub?: string;
+}) {
+  return (
+    <Reveal className="mb-14">
+      <div className="flex items-baseline gap-4 mb-6">
+        <span className="font-mono text-[11px] text-accent tracking-widest">
+          {index}
+        </span>
+        <span className="h-px flex-1 max-w-24 bg-ink/20" aria-hidden="true" />
+        <p className="text-[11px] font-semibold text-muted uppercase tracking-[0.22em]">
+          {eyebrow}
+        </p>
+      </div>
+      <h2 className="font-serif text-4xl md:text-5xl font-bold text-ink tracking-tight leading-[1.05] max-w-3xl">
+        {heading}
+      </h2>
+      {sub && (
+        <p className="text-muted text-sm mt-4 max-w-xl leading-relaxed">{sub}</p>
+      )}
+    </Reveal>
+  );
+}
+
 export default function Home() {
   const liveCaseStudies = caseStudies.filter((s) => s.status === "live");
   const liveProjects = projects.filter((p) => p.status === "live");
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-parchment text-ink">
+      <IntroReveal />
       <NavBar />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section
         id="hero"
-        className="relative overflow-hidden pt-32 pb-24 px-6 bg-[#FAF7F2]"
+        className="relative overflow-hidden min-h-screen flex flex-col justify-end px-6 pt-32 pb-12"
       >
-        {/* Decorative gold line */}
-        <svg
-          className="absolute top-0 right-0 w-[520px] h-full pointer-events-none opacity-25"
-          viewBox="0 0 520 700"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M 480 0 C 320 120, 200 280, 380 480 C 460 580, 500 640, 420 700"
-            stroke="#C9A961"
-            strokeWidth="1.5"
-            fill="none"
-          />
-          <path
-            d="M 500 80 C 360 180, 260 340, 400 520"
-            stroke="#C9A961"
-            strokeWidth="0.75"
-            fill="none"
-            opacity="0.5"
-          />
-        </svg>
+        <Contour className="absolute inset-0 w-full h-full pointer-events-none" />
 
-        <div className="max-w-6xl mx-auto relative">
-          <div className="flex flex-col md:flex-row items-center gap-16">
+        <div className="max-w-7xl mx-auto w-full relative">
+          {/* Eyebrow */}
+          <Reveal>
+            <p className="flex items-center gap-3 text-xs font-semibold text-muted uppercase tracking-[0.24em] mb-10">
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-accent inline-block"
+                aria-hidden="true"
+              />
+              <span>
+                AI-Native Principal PM · Enterprise{" "}
+                <span className="normal-case">SaaS</span>
+              </span>
+            </p>
+          </Reveal>
 
-            {/* Left: text */}
-            <div className="flex-1 min-w-0">
-              {/* Eyebrow */}
-              <p className="text-xs font-semibold text-[#0F6B6B] uppercase tracking-[0.2em] mb-5">
-                AI-Native Principal PM · Enterprise <span className="normal-case">SaaS</span>
-              </p>
-
-              {/* Headline */}
-              <h1
-                className="font-serif text-5xl md:text-6xl font-bold text-[#1A1A1A] leading-[1.1] mb-6 tracking-tight"
-              >
-                I build AI products
-                <br />
-                <span className="text-[#0F6B6B]">that ship.</span>
+          {/* Headline + portrait */}
+          <div className="relative">
+            <Reveal>
+              <h1 className="font-serif font-bold text-ink tracking-tight leading-[0.92] mb-12">
+                <span className="block text-[clamp(3.2rem,11vw,9.5rem)]">
+                  I build
+                </span>
+                <span className="block text-[clamp(3.2rem,11vw,9.5rem)] md:pl-[14vw]">
+                  AI products
+                </span>
+                <span className="block italic text-accent text-[clamp(3.2rem,11.5vw,10rem)] md:text-right">
+                  that ship.
+                </span>
               </h1>
+            </Reveal>
 
-              {/* Sub-headline */}
-              <p className="text-lg text-[#5C5C5C] max-w-[480px] leading-relaxed mb-3">
-                11+ years at Oracle NetSuite and Fractal Analytics. Ph.D. Finance. $5M+ revenue impact, 25% adoption lift.
+            {/* Portrait — anchored beside the first headline lines on desktop */}
+            <Reveal
+              delay={150}
+              className="md:absolute md:top-2 md:right-0 lg:right-12 mb-10 md:mb-0 w-40 md:w-44 lg:w-52"
+            >
+              <div className="relative border border-ink/20 p-1.5 bg-parchment">
+                <Image
+                  src="/profile.jpeg"
+                  alt="Shubhendu Vimal"
+                  width={280}
+                  height={280}
+                  className="w-full aspect-square object-cover"
+                  priority
+                />
+                <span
+                  className="absolute -bottom-2 -left-2 w-full h-full border border-accent/40 -z-10"
+                  aria-hidden="true"
+                />
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Supporting copy + CTAs */}
+          <div className="grid md:grid-cols-12 gap-8 items-end mb-16">
+            <Reveal delay={100} className="md:col-span-5 md:col-start-1">
+              <p className="text-base md:text-lg text-ink-soft leading-relaxed mb-3">
+                11+ years at Oracle NetSuite and Fractal Analytics. Ph.D.
+                Finance. $5M+ revenue impact, 25% adoption lift.
               </p>
-              <p className="text-base text-[#5C5C5C] max-w-[480px] leading-relaxed mb-8">
+              <p className="text-sm md:text-base text-muted leading-relaxed">
                 Shipped GenAI, Predictive AI, NLP, and Agentic products —{" "}
                 <em>and</em> built hands-on demos to prove it.
               </p>
+            </Reveal>
 
-              {/* CTAs */}
-              <div className="flex gap-3 flex-wrap mb-5">
+            <Reveal delay={200} className="md:col-span-5 md:col-start-8">
+              <div className="flex gap-3 flex-wrap md:justify-end">
                 <a
                   href="#case-studies"
-                  className="px-6 py-3 bg-[#0F6B6B] text-white rounded-lg hover:bg-[#0D5C5C] transition-colors text-sm font-semibold"
+                  className="px-6 py-3.5 bg-ink text-parchment hover:bg-accent transition-colors text-[11px] font-semibold uppercase tracking-[0.18em]"
                 >
                   View Case Studies
                 </a>
@@ -82,184 +137,181 @@ export default function Home() {
                   href="/resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 border-2 border-[#0F6B6B] text-[#0F6B6B] rounded-lg hover:bg-[#E8F3F3] transition-colors text-sm font-semibold"
+                  className="px-6 py-3.5 border border-ink/40 text-ink hover:border-accent hover:text-accent transition-colors text-[11px] font-semibold uppercase tracking-[0.18em]"
                 >
                   Download Resume
                 </a>
               </div>
-
-            </div>
-
-            {/* Right: photo */}
-            <div className="flex-shrink-0 relative">
-              <div className="absolute inset-0 rounded-full bg-[#E8F3F3] scale-110" />
-              <div className="absolute -inset-3 rounded-full border border-[#C9A961]/30" />
-              <Image
-                src="/profile.jpeg"
-                alt="Shubhendu Vimal"
-                width={280}
-                height={280}
-                className="relative rounded-full object-cover w-56 h-56 md:w-64 md:h-64 ring-4 ring-white shadow-xl"
-                priority
-              />
-            </div>
+            </Reveal>
           </div>
 
           {/* Stats strip */}
-          <div className="mt-16 pt-10 border-t border-[#0F6B6B]/10 grid grid-cols-2 md:grid-cols-4 gap-6">
-            {heroStats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p
-                  className="font-serif text-4xl font-bold text-[#0F6B6B]"
-                >
-                  {stat.value}
-                </p>
-                <p className="text-xs text-[#5C5C5C] mt-1.5 font-medium uppercase tracking-wide">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
+          <Reveal delay={250}>
+            <div className="border-t border-ink/20 pt-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+              {heroStats.map((stat, i) => (
+                <div key={stat.label}>
+                  <p className="font-mono text-[10px] text-accent tracking-widest mb-2">
+                    0{i + 1}
+                  </p>
+                  <p className="font-serif text-3xl md:text-4xl font-bold text-ink">
+                    {stat.value}
+                  </p>
+                  <p className="text-[10px] text-muted mt-1.5 font-medium uppercase tracking-[0.18em]">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ── AI Across Categories ──────────────────────────────────── */}
-      <section className="py-20 px-6 bg-white border-t border-[#0F6B6B]/8">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-10">
-            <p className="text-xs font-semibold text-[#0F6B6B] uppercase tracking-widest mb-2">
-              AI Fluency
-            </p>
-            <h2
-              className="font-serif text-3xl font-bold text-[#1A1A1A] tracking-tight"
-            >
-              Four categories of AI shipped.
-            </h2>
-            <p className="text-[#5C5C5C] text-sm mt-2 max-w-xl">
-              Not just specced — built and deployed at Oracle NetSuite and Fractal Analytics.
-            </p>
-          </div>
+      {/* ── Skills ticker ─────────────────────────────────────────── */}
+      <Ticker />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {aiCategories.map((cat) => (
-              <div
-                key={cat.label}
-                className="bg-[#FAF7F2] rounded-xl p-6 flex flex-col gap-3 border border-[#0F6B6B]/10 hover:border-[#0F6B6B]/25 hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div>
-                  <p
-                    className="font-serif text-2xl font-bold text-[#0F6B6B] leading-tight"
-                  >
-                    {cat.label}
+      {/* ── AI Across Categories ──────────────────────────────────── */}
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader
+            index="01"
+            eyebrow="AI Fluency"
+            heading="Four categories of AI shipped."
+            sub="Not just specced — built and deployed at Oracle NetSuite and Fractal Analytics."
+          />
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink/15 border border-ink/15">
+            {aiCategories.map((cat, i) => (
+              <Reveal key={cat.label} delay={i * 80} className="bg-parchment">
+                <div className="p-7 h-full flex flex-col gap-4 hover:bg-parchment-deep transition-colors duration-300">
+                  <p className="font-mono text-[10px] text-accent tracking-widest">
+                    0{i + 1}
                   </p>
-                  <p className="text-xs text-[#9A9A9A] font-medium mt-0.5 uppercase tracking-wide">
-                    {cat.sublabel}
+                  <div>
+                    <p className="font-serif text-3xl font-bold text-ink leading-tight">
+                      {cat.label}
+                    </p>
+                    <p className="text-[10px] text-muted-light font-medium mt-1.5 uppercase tracking-[0.16em]">
+                      {cat.sublabel}
+                    </p>
+                  </div>
+                  <p className="text-sm text-muted leading-relaxed flex-1">
+                    {cat.proof}
                   </p>
+                  {cat.link.external ? (
+                    <a
+                      href={cat.link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-rule self-start text-xs font-semibold text-accent uppercase tracking-[0.14em]"
+                    >
+                      {cat.link.label} →
+                    </a>
+                  ) : (
+                    <Link
+                      href={cat.link.href}
+                      className="link-rule self-start text-xs font-semibold text-accent uppercase tracking-[0.14em]"
+                    >
+                      {cat.link.label} →
+                    </Link>
+                  )}
                 </div>
-                <div className="w-8 h-px bg-[#C9A961]" />
-                <p className="text-sm text-[#5C5C5C] leading-relaxed flex-1">
-                  {cat.proof}
-                </p>
-                {cat.link.external ? (
-                  <a
-                    href={cat.link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-semibold text-[#0F6B6B] hover:underline mt-1"
-                  >
-                    {cat.link.label} →
-                  </a>
-                ) : (
-                  <Link
-                    href={cat.link.href}
-                    className="text-xs font-semibold text-[#0F6B6B] hover:underline mt-1"
-                  >
-                    {cat.link.label} →
-                  </Link>
-                )}
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── Case Studies — Track A ────────────────────────────────── */}
-      <section id="case-studies" className="py-20 px-6 bg-[#FAF7F2]">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-10">
-            <span className="inline-block text-xs font-semibold text-[#0F6B6B] uppercase tracking-widest bg-[#E8F3F3] border border-[#0F6B6B]/15 px-3 py-1 rounded-full mb-3">
-              Track A — Enterprise Case Studies
-            </span>
-            <h2
-              className="font-serif text-3xl font-bold text-[#1A1A1A] tracking-tight"
-            >
-              Principal PM judgment at enterprise scale.
-            </h2>
-            <p className="text-[#5C5C5C] text-sm mt-2 max-w-xl">
-              Sanitized work from Oracle NetSuite and Fractal Analytics. Real problems, real constraints, real outcomes.
-            </p>
-          </div>
+      <section id="case-studies" className="py-24 px-6 border-t border-ink/15">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader
+            index="02"
+            eyebrow="Track A — Enterprise Case Studies"
+            heading="Principal PM judgment at enterprise scale."
+            sub="Sanitized work from Oracle NetSuite and Fractal Analytics. Real problems, real constraints, real outcomes."
+          />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {liveCaseStudies.map((study) => {
-              const card = (
+          <div>
+            {liveCaseStudies.map((study, i) => {
+              const even = i % 2 === 1;
+              const inner = (
                 <div
-                  className={`group bg-white rounded-xl p-6 h-full flex flex-col border border-[#0F6B6B]/10 shadow-sm transition-all duration-200 ${
-                    study.href
-                      ? "hover:shadow-md hover:border-[#0F6B6B]/30 hover:-translate-y-0.5 cursor-pointer"
-                      : "opacity-75"
+                  className={`group grid md:grid-cols-12 gap-x-8 gap-y-4 items-start py-12 border-t border-ink/15 ${
+                    study.href ? "cursor-pointer" : "opacity-75"
                   }`}
                 >
-                  {/* ID badge */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <span className="inline-block text-[10px] font-bold text-[#0F6B6B] bg-[#E8F3F3] border border-[#0F6B6B]/15 px-2 py-0.5 rounded font-mono">
-                        {study.id}
-                      </span>
+                  {/* Ghost index */}
+                  <div
+                    className={`md:col-span-2 ${
+                      even ? "md:order-3 md:text-right" : ""
+                    }`}
+                  >
+                    <span
+                      className="font-serif text-6xl md:text-7xl text-ink/10 group-hover:text-accent/25 transition-colors duration-300 leading-none select-none"
+                      aria-hidden="true"
+                    >
+                      {study.id}
+                    </span>
+                  </div>
+
+                  {/* Body */}
+                  <div
+                    className={`md:col-span-7 ${
+                      even ? "md:order-2 md:col-start-4" : ""
+                    }`}
+                  >
+                    <p className="font-serif text-3xl md:text-4xl font-bold text-ink group-hover:text-accent transition-colors duration-300 leading-tight mb-3">
+                      {study.metricLabel}
+                    </p>
+                    <h3 className="text-base font-semibold text-ink mb-2">
+                      {study.title}
                       {study.tag && (
-                        <span className="inline-block text-[10px] font-semibold text-[#7C5C1E] bg-[#FDF3DC] border border-[#C9A961]/30 px-2 py-0.5 rounded">
+                        <span className="ml-3 align-middle inline-block text-[9px] font-semibold text-accent border border-accent/40 px-2 py-0.5 uppercase tracking-[0.14em]">
                           {study.tag}
                         </span>
                       )}
-                    </div>
+                    </h3>
+                    <p className="text-sm text-muted leading-relaxed max-w-xl">
+                      {study.description}
+                    </p>
+                  </div>
+
+                  {/* Meta */}
+                  <div
+                    className={`md:col-span-3 flex md:flex-col md:items-end justify-between gap-3 ${
+                      even ? "md:order-1 md:items-start" : ""
+                    }`}
+                  >
+                    <p
+                      className={`font-mono text-[10px] text-muted-light tracking-wide leading-relaxed ${
+                        even ? "" : "md:text-right"
+                      }`}
+                    >
+                      {study.metricSub}
+                    </p>
                     {study.href && (
-                      <span className="text-[11px] text-[#0F6B6B] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                        Read case →
+                      <span className="text-[11px] font-semibold text-accent uppercase tracking-[0.16em] whitespace-nowrap">
+                        Read case{" "}
+                        <span
+                          className="inline-block transition-transform duration-300 group-hover:translate-x-1.5"
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
                       </span>
                     )}
                   </div>
-
-                  {/* Big metric — leads the card */}
-                  <p
-                    className="font-serif text-xl font-bold text-[#0F6B6B] leading-tight mb-1"
-                  >
-                    {study.metricLabel}
-                  </p>
-                  <p className="text-[11px] text-[#9A9A9A] font-medium mb-3 leading-snug">
-                    {study.metricSub}
-                  </p>
-
-                  {/* Project name */}
-                  <h3 className="text-sm font-semibold text-[#1A1A1A] mb-2 leading-snug">
-                    {study.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-[#5C5C5C] leading-relaxed flex-1">
-                    {study.description}
-                  </p>
-
-                  {/* Gold accent line */}
-                  <div className="w-6 h-px bg-[#C9A961] mt-4" />
                 </div>
               );
 
               return study.href ? (
-                <Link key={study.id} href={study.href} className="block">
-                  {card}
-                </Link>
+                <Reveal key={study.id}>
+                  <Link href={study.href} className="block">
+                    {inner}
+                  </Link>
+                </Reveal>
               ) : (
-                <div key={study.id}>{card}</div>
+                <Reveal key={study.id}>{inner}</Reveal>
               );
             })}
           </div>
@@ -267,100 +319,103 @@ export default function Home() {
       </section>
 
       {/* ── AI Projects — Track B ─────────────────────────────────── */}
-      <section id="projects" className="py-20 px-6 bg-white border-t border-[#0F6B6B]/8">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-10">
-            <span className="inline-block text-xs font-semibold text-[#0F6B6B] uppercase tracking-widest bg-[#E8F3F3] border border-[#0F6B6B]/15 px-3 py-1 rounded-full mb-3">
-              Track B — Agentic Architecture
-            </span>
-            <h2
-              className="font-serif text-3xl font-bold text-[#1A1A1A] tracking-tight"
-            >
-              I don&apos;t just spec AI. I architect and ship it.
-            </h2>
-            <p className="text-[#5C5C5C] text-sm mt-2 max-w-xl">
-              Full-stack AI systems — RAG pipelines, Trust Consoles, MCP integrations, and agentic orchestration — built end-to-end.
-            </p>
-          </div>
+      <section id="projects" className="py-24 px-6 border-t border-ink/15">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader
+            index="03"
+            eyebrow="Track B — Agentic Architecture"
+            heading="I don't just spec AI. I architect and ship it."
+            sub="Full-stack AI systems — RAG pipelines, Trust Consoles, MCP integrations, and agentic orchestration — built end-to-end."
+          />
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {liveProjects.map((project) => {
+          <div className="space-y-px">
+            {liveProjects.map((project, i) => {
               const hasLive = !!project.liveUrl;
               const hasGitHub = !!project.githubUrl;
               const primaryHref = project.liveUrl ?? project.githubUrl ?? "#";
-              const primaryIsExternal = true;
+              const even = i % 2 === 1;
 
               return (
-                <div
-                  key={project.id}
-                  className="relative bg-[#FAF7F2] rounded-xl p-7 flex flex-col border border-[#0F6B6B]/10 hover:border-[#0F6B6B]/25 hover:-translate-y-0.5 transition-all duration-200 shadow-sm cursor-pointer"
-                >
-                  {/* Header row */}
-                  <div className="flex items-start justify-between mb-4">
-                    <span className="inline-block text-[10px] font-bold text-[#5C5C5C] bg-white border border-[#0F6B6B]/10 px-2 py-0.5 rounded font-mono">
-                      {project.id}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#0F6B6B] bg-[#E8F3F3] border border-[#0F6B6B]/15 px-2 py-0.5 rounded-full">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#0F6B6B]" />
-                      {hasLive ? "Live" : "GitHub"}
-                    </span>
-                  </div>
-
-                  {/* Title + tagline */}
-                  <h3
-                    className="font-serif text-2xl font-bold text-[#1A1A1A] mb-1"
-                  >
-                    {project.title}
-                  </h3>
-                  <p className="text-xs text-[#9A9A9A] uppercase tracking-wider font-medium mb-4">
-                    {project.tagline}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] font-medium text-[#0F6B6B] bg-[#E8F3F3] border border-[#0F6B6B]/15 px-2 py-0.5 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-sm text-[#5C5C5C] leading-relaxed flex-1 mb-5">
-                    {project.description}
-                  </p>
-
-                  {/* CTAs */}
-                  <div className="flex items-center gap-4 pt-4 border-t border-[#0F6B6B]/8">
-                    <a
-                      href={primaryHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Open ${project.title}`}
-                      className="text-sm font-semibold text-[#0F6B6B] hover:underline before:absolute before:inset-0 before:content-['']"
+                <Reveal key={project.id}>
+                  <div className="group relative grid md:grid-cols-12 gap-x-8 gap-y-5 py-14 border-t border-ink/15 cursor-pointer">
+                    {/* Meta rail */}
+                    <div
+                      className={`md:col-span-3 flex md:flex-col gap-4 md:gap-5 items-baseline md:items-start ${
+                        even ? "md:order-2 md:items-end" : ""
+                      }`}
                     >
-                      {hasLive ? "Try it →" : "View on GitHub →"}
-                    </a>
-                    {!hasLive && hasGitHub && (
-                      <span className="text-xs text-[#9A9A9A]">
-                        Live demo coming soon
+                      <span className="font-mono text-[11px] text-muted-light tracking-widest">
+                        {project.id}
                       </span>
-                    )}
-                    {hasLive && hasGitHub && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="relative z-10 text-xs text-[#9A9A9A] hover:text-[#0F6B6B] transition-colors"
+                      <span className="inline-flex items-center gap-2 text-[10px] font-semibold text-accent uppercase tracking-[0.16em]">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full bg-accent"
+                          aria-hidden="true"
+                        />
+                        {hasLive ? "Live" : "GitHub"}
+                      </span>
+                      <p
+                        className={`font-mono text-[10px] text-muted-light leading-relaxed ${
+                          even ? "md:text-right" : ""
+                        }`}
                       >
-                        GitHub →
-                      </a>
-                    )}
+                        {project.tags.join(" / ")}
+                      </p>
+                    </div>
+
+                    {/* Body */}
+                    <div
+                      className={`md:col-span-8 ${
+                        even
+                          ? "md:order-1 md:col-start-1"
+                          : "md:col-start-5"
+                      }`}
+                    >
+                      <h3 className="font-serif text-4xl md:text-5xl font-bold text-ink group-hover:text-accent transition-colors duration-300 leading-tight mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-[11px] text-muted uppercase tracking-[0.2em] font-medium mb-5">
+                        {project.tagline}
+                      </p>
+                      <p className="text-sm md:text-base text-muted leading-relaxed max-w-2xl mb-7">
+                        {project.description}
+                      </p>
+
+                      <div className="flex items-center gap-6">
+                        <a
+                          href={primaryHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${project.title}`}
+                          className="text-xs font-semibold text-accent uppercase tracking-[0.16em] before:absolute before:inset-0 before:content-['']"
+                        >
+                          {hasLive ? "Try it" : "View on GitHub"}{" "}
+                          <span
+                            className="inline-block transition-transform duration-300 group-hover:translate-x-1.5"
+                            aria-hidden="true"
+                          >
+                            →
+                          </span>
+                        </a>
+                        {!hasLive && hasGitHub && (
+                          <span className="text-xs text-muted-light">
+                            Live demo coming soon
+                          </span>
+                        )}
+                        {hasLive && hasGitHub && (
+                          <a
+                            href={project.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="link-rule relative z-10 text-xs text-muted hover:text-accent transition-colors uppercase tracking-[0.16em]"
+                          >
+                            GitHub →
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </Reveal>
               );
             })}
           </div>
@@ -368,185 +423,225 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────────── */}
-      <section id="testimonials" className="py-20 px-6 bg-[#FAF7F2] border-t border-[#0F6B6B]/8">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-10 text-center">
-            <h2
-              className="font-serif text-3xl font-bold text-[#1A1A1A] tracking-tight"
-            >
-              Kind Words from Teammates & Partners
-            </h2>
-          </div>
+      <section id="testimonials" className="py-24 px-6 border-t border-ink/15">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader
+            index="04"
+            eyebrow="Testimonials"
+            heading="Kind Words from Teammates & Partners"
+          />
 
-          <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+          <div className="columns-1 md:columns-2 gap-10 max-w-6xl">
             {testimonials.map((t, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-xl p-6 flex flex-col border border-[#0F6B6B]/10"
-              >
-                <div className="w-6 h-px bg-[#C9A961] mb-4" />
-                <p className="text-sm text-[#5C5C5C] leading-relaxed italic flex-1 mb-5">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div>
-                  <p className="text-sm font-semibold text-[#1A1A1A]">{t.name}</p>
-                  <p className="text-xs text-[#9A9A9A]">
-                    {[t.title, t.company, t.date].filter(Boolean).join(" · ")}
-                  </p>
-                  {t.linkedinUrl && (
-                    <a
-                      href={t.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-[#0F6B6B] hover:underline mt-2 inline-block"
-                    >
-                      View on LinkedIn
-                    </a>
-                  )}
-                </div>
-              </div>
+              <Reveal key={i} className="break-inside-avoid mb-10">
+                <figure className="border-t border-ink/15 pt-6">
+                  <span
+                    className="font-serif text-5xl text-accent leading-none block mb-3 select-none"
+                    aria-hidden="true"
+                  >
+                    &ldquo;
+                  </span>
+                  <blockquote className="font-serif italic text-lg text-ink-soft leading-relaxed mb-5">
+                    {t.quote}
+                  </blockquote>
+                  <figcaption>
+                    <p className="text-sm font-semibold text-ink">{t.name}</p>
+                    <p className="font-mono text-[10px] text-muted-light mt-1 leading-relaxed">
+                      {[t.title, t.company, t.date].filter(Boolean).join(" · ")}
+                    </p>
+                    {t.linkedinUrl && (
+                      <a
+                        href={t.linkedinUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link-rule text-xs text-accent mt-3 inline-block uppercase tracking-[0.14em]"
+                      >
+                        View on LinkedIn
+                      </a>
+                    )}
+                  </figcaption>
+                </figure>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── About ────────────────────────────────────────────────── */}
-      <section id="about" className="py-20 px-6 bg-white border-t border-[#0F6B6B]/8">
-        <div className="max-w-6xl mx-auto">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold text-[#5C5C5C] uppercase tracking-widest mb-5">
-              About
-            </p>
-
-            {/* Serif opening line */}
-            <h2
-              className="font-serif text-3xl font-bold text-[#1A1A1A] leading-tight mb-6"
-            >
-              I turn ambiguous enterprise problems into shipped AI products.
-            </h2>
-
-            {/* Existing paragraphs — untouched */}
-            <div className="space-y-4 text-[#5C5C5C] text-[15px] leading-relaxed mb-8">
-              <p>
-                I&apos;ve spent 11+ years at the intersection of data and product — building ML-powered products
-                across finance, CPG, and operations at Oracle NetSuite and Fractal Analytics. AR collections forecasting,
-                customer churn prediction, pricing optimization engines, LLM-powered analytics assistants.
-                If there&apos;s a decision buried in messy enterprise data, I&apos;ve probably built something to surface it.
-              </p>
-              <p>
-                My edge: a Ph.D. in Finance, a decade of hands-on AI product work, and the ability to sit with a
-                data scientist in the morning, a business stakeholder in the afternoon, and a UX researcher the
-                next day — and speak each language fluently.
-              </p>
-              <p>
-                This portfolio is two things: the PM judgment behind real enterprise work (sanitized case studies),
-                and the AI tools I&apos;m building myself — because the best AI PMs ship, not just spec.
-              </p>
-            </div>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {[
-                "GenAI",
-                "Predictive AI",
-                "NLP",
-                "Agentic",
-                "Enterprise SaaS",
-                "Ph.D. Finance",
-                "Oracle NetSuite alumnus",
-                "Fractal Analytics alumnus",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs font-medium text-[#0F6B6B] bg-[#E8F3F3] border border-[#0F6B6B]/15 px-3 py-1 rounded-full"
-                >
-                  {tag}
+      <section id="about" className="relative overflow-hidden py-24 px-6 border-t border-ink/15">
+        <Contour className="absolute inset-0 w-full h-full pointer-events-none -scale-x-100" />
+        <div className="max-w-7xl mx-auto relative">
+          <div className="grid md:grid-cols-12 gap-10">
+            <Reveal className="md:col-span-3">
+              <div className="flex items-baseline gap-4">
+                <span className="font-mono text-[11px] text-accent tracking-widest">
+                  05
                 </span>
-              ))}
-            </div>
+                <p className="text-[11px] font-semibold text-muted uppercase tracking-[0.22em]">
+                  About
+                </p>
+              </div>
+            </Reveal>
 
-            {/* Personal touch */}
-            <p className="text-sm text-[#9A9A9A] leading-relaxed border-l-2 border-[#C9A961] pl-4">
-              Outside work: fitness, swimming, tennis, and family time in Bangalore. Also a long-running curiosity
-              about Vedic philosophy and how it intersects with decision-making.
+            <div className="md:col-span-8 md:col-start-5">
+              <Reveal>
+                <h2 className="font-serif text-4xl md:text-5xl font-bold text-ink leading-[1.05] tracking-tight mb-10">
+                  I turn ambiguous enterprise problems into{" "}
+                  <span className="italic text-accent">shipped AI products.</span>
+                </h2>
+              </Reveal>
+
+              {/* Existing paragraphs — untouched */}
+              <Reveal delay={100}>
+                <div className="space-y-5 text-muted text-[15px] md:text-base leading-relaxed mb-10 max-w-2xl">
+                  <p>
+                    I&apos;ve spent 11+ years at the intersection of data and
+                    product — building ML-powered products across finance, CPG,
+                    and operations at Oracle NetSuite and Fractal Analytics. AR
+                    collections forecasting, customer churn prediction, pricing
+                    optimization engines, LLM-powered analytics assistants. If
+                    there&apos;s a decision buried in messy enterprise data,
+                    I&apos;ve probably built something to surface it.
+                  </p>
+                  <p>
+                    My edge: a Ph.D. in Finance, a decade of hands-on AI product
+                    work, and the ability to sit with a data scientist in the
+                    morning, a business stakeholder in the afternoon, and a UX
+                    researcher the next day — and speak each language fluently.
+                  </p>
+                  <p>
+                    This portfolio is two things: the PM judgment behind real
+                    enterprise work (sanitized case studies), and the AI tools
+                    I&apos;m building myself — because the best AI PMs ship, not
+                    just spec.
+                  </p>
+                </div>
+              </Reveal>
+
+              {/* Tags */}
+              <Reveal delay={150}>
+                <ul className="flex flex-wrap gap-x-5 gap-y-2 mb-10 font-mono text-[11px] text-ink-soft uppercase tracking-[0.14em]">
+                  {[
+                    "GenAI",
+                    "Predictive AI",
+                    "NLP",
+                    "Agentic",
+                    "Enterprise SaaS",
+                    "Ph.D. Finance",
+                    "Oracle NetSuite alumnus",
+                    "Fractal Analytics alumnus",
+                  ].map((tag, i, arr) => (
+                    <li key={tag} className="flex items-center gap-5">
+                      {tag}
+                      {i < arr.length - 1 && (
+                        <span className="text-accent text-[8px]" aria-hidden="true">
+                          ◆
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+
+              {/* Personal touch */}
+              <Reveal delay={200}>
+                <p className="text-sm text-muted leading-relaxed border-l-2 border-accent pl-5 max-w-xl">
+                  Outside work: fitness, swimming, tennis, and family time in
+                  Bangalore. Also a long-running curiosity about Vedic
+                  philosophy and how it intersects with decision-making.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Let's connect ─────────────────────────────────────────── */}
+      <section id="connect" className="bg-ink text-parchment pt-28 pb-10 px-6">
+        <div className="max-w-7xl mx-auto">
+          <Reveal>
+            <div className="flex items-baseline gap-4 mb-10">
+              <span className="font-mono text-[11px] text-accent tracking-widest">
+                06
+              </span>
+              <span
+                className="h-px flex-1 max-w-24 bg-parchment/25"
+                aria-hidden="true"
+              />
+            </div>
+            <h2 className="font-serif font-bold text-[clamp(3rem,9vw,7.5rem)] leading-[0.95] tracking-tight mb-8">
+              Let&apos;s{" "}
+              <span className="italic text-accent">connect.</span>
+            </h2>
+            <p className="text-parchment/70 text-base mb-14 max-w-md leading-relaxed">
+              Open to collaborations or trading notes on enterprise AI.
             </p>
-          </div>
-        </div>
-      </section>
+          </Reveal>
 
-      {/* ── Let&apos;s connect ──────────────────────────────────────────── */}
-      <section id="connect" className="py-20 px-6 bg-[#0F6B6B]">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2
-            className="font-serif text-4xl font-bold text-white mb-4 tracking-tight"
-          >
-            Let&apos;s connect.
-          </h2>
-          <p className="text-[#E8F3F3] text-base mb-10 max-w-md mx-auto">
-            Open to collaborations or trading notes on enterprise AI.
-          </p>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <a
-              href="mailto:shubhendus@gmail.com"
-              className="px-7 py-3 bg-white text-[#0F6B6B] rounded-lg hover:bg-[#FAF7F2] transition-colors text-sm font-semibold"
-            >
-              Email me
-            </a>
-            <a
-              href="https://linkedin.com/in/shubhendu-vimal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-7 py-3 border-2 border-white/50 text-white rounded-lg hover:border-white hover:bg-white/10 transition-all text-sm font-semibold"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/Shubhendu123"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-7 py-3 border-2 border-white/50 text-white rounded-lg hover:border-white hover:bg-white/10 transition-all text-sm font-semibold"
-            >
-              GitHub
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Footer ───────────────────────────────────────────────── */}
-      <footer className="bg-[#1A1A1A] border-t border-white/5 py-8 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full bg-[#0F6B6B] flex items-center justify-center shrink-0">
-              <span className="text-white font-bold text-[9px]">SV</span>
+          <Reveal delay={100}>
+            <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mb-24">
+              <a
+                href="mailto:shubhendus@gmail.com"
+                className="link-rule self-start text-sm font-semibold uppercase tracking-[0.18em] text-parchment hover:text-accent transition-colors"
+              >
+                Email me
+              </a>
+              <a
+                href="https://linkedin.com/in/shubhendu-vimal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-rule self-start text-sm font-semibold uppercase tracking-[0.18em] text-parchment hover:text-accent transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/Shubhendu123"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-rule self-start text-sm font-semibold uppercase tracking-[0.18em] text-parchment hover:text-accent transition-colors"
+              >
+                GitHub
+              </a>
             </div>
-            <p className="text-sm text-white/40">© {new Date().getFullYear()} Shubhendu Vimal</p>
-          </div>
-          <div className="flex gap-6">
-            <a
-              href="https://linkedin.com/in/shubhendu-vimal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-white/40 hover:text-white transition-colors"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/Shubhendu123"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-white/40 hover:text-white transition-colors"
-            >
-              GitHub
-            </a>
-            <a
-              href="mailto:shubhendus@gmail.com"
-              className="text-sm text-white/40 hover:text-white transition-colors"
-            >
-              Email
-            </a>
-          </div>
+          </Reveal>
+
+          {/* ── Footer ─────────────────────────────────────────────── */}
+          <footer className="border-t border-parchment/15 pt-7 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-5 h-5 rounded-full border border-parchment/40 flex items-center justify-center shrink-0">
+                <span className="text-parchment font-bold text-[8px]">SV</span>
+              </div>
+              <p className="text-sm text-parchment/50">
+                © {new Date().getFullYear()} Shubhendu Vimal
+              </p>
+            </div>
+            <div className="flex gap-7">
+              <a
+                href="https://linkedin.com/in/shubhendu-vimal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs uppercase tracking-[0.14em] text-parchment/50 hover:text-parchment transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/Shubhendu123"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs uppercase tracking-[0.14em] text-parchment/50 hover:text-parchment transition-colors"
+              >
+                GitHub
+              </a>
+              <a
+                href="mailto:shubhendus@gmail.com"
+                className="text-xs uppercase tracking-[0.14em] text-parchment/50 hover:text-parchment transition-colors"
+              >
+                Email
+              </a>
+            </div>
+          </footer>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }
