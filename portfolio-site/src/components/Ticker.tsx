@@ -5,6 +5,7 @@ const TICKER_TERMS = [
   "Agentic",
   "Enterprise SaaS",
   "Ph.D. Finance",
+  "ISB alumnus",
   "Oracle NetSuite alumnus",
   "Fractal Analytics alumnus",
 ];

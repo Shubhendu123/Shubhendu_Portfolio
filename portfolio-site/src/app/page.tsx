@@ -78,10 +78,10 @@ export default function Home() {
           <div className="relative">
             <Reveal>
               <h1 className="font-serif font-bold text-ink tracking-tight leading-[0.92] mb-12">
-                <span className="block text-[clamp(3.2rem,11vw,9.5rem)]">
+                <span className="block text-[clamp(3.2rem,10vw,8.75rem)]">
                   I build
                 </span>
-                <span className="block text-[clamp(3.2rem,11vw,9.5rem)] md:pl-[14vw]">
+                <span className="block text-[clamp(3.2rem,10vw,8.75rem)] md:pl-[10vw]">
                   AI products
                 </span>
                 <span className="block italic text-accent text-[clamp(3.2rem,11.5vw,10rem)] md:text-right">
@@ -93,7 +93,7 @@ export default function Home() {
             {/* Portrait — anchored beside the first headline lines on desktop */}
             <Reveal
               delay={150}
-              className="md:absolute md:top-2 md:right-0 lg:right-12 mb-10 md:mb-0 w-40 md:w-44 lg:w-52"
+              className="lg:absolute lg:top-0 lg:right-0 mb-10 lg:mb-0 w-40 lg:w-36 xl:w-44 2xl:w-52"
             >
               <div className="relative border border-ink/20 p-1.5 bg-parchment">
                 <Image
@@ -283,7 +283,7 @@ export default function Home() {
                     }`}
                   >
                     <p
-                      className={`font-mono text-[10px] text-muted-light tracking-wide leading-relaxed ${
+                      className={`font-mono text-xs md:text-sm text-muted tracking-wide leading-relaxed ${
                         even ? "" : "md:text-right"
                       }`}
                     >
@@ -528,6 +528,7 @@ export default function Home() {
                     "Agentic",
                     "Enterprise SaaS",
                     "Ph.D. Finance",
+                    "ISB alumnus",
                     "Oracle NetSuite alumnus",
                     "Fractal Analytics alumnus",
                   ].map((tag, i, arr) => (
